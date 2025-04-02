@@ -1,0 +1,47 @@
+.image-uploader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.uploaded-images {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.image-preview {
+  position: relative;
+}
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+.image-preview button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.file-item {
+  position: relative; /* Necesario para posicionar el botón dentro */
+  border: 4px solid transparent; /* Borde predeterminado */
+  border-radius: 7px; /* Opcional: para bordes redondeados */
+  transition: border-color 0.3s ease; /* Animación suave al cambiar el borde */
+}
+
+.file-item:hover {
+  border-color: var(--p-primary-color, #007bff); /* Ajusta el color según tu tema */
+}
+
+.file-item .delete-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 4px;
+  display: none; /* Oculto inicialmente */
+  z-index: 10; /* Para asegurarse de que esté sobre otros elementos */
+}
+
+.file-item:hover .delete-button {
+  display: block;
+}

@@ -1,0 +1,51 @@
+<p-fileupload
+  #fileUpload
+  [files]="files"
+  [multiple]="multiple"
+  [chooseLabel]="chooseLabel || 'Cargar imágenes'"
+  [showUploadButton]="false"
+  [showCancelButton]="false"
+  [accept]="accept || 'image/*'"
+  [maxFileSize]="maxFileSize || 1024000"
+  (onSelect)="onSelectedFiles($event)"
+  
+>
+  <ng-template pTemplate="content" let-files let-removeFileCallback="removeFileCallback">
+    <div *ngIf="files.length > 0" class="flex flex-wrap gap-3 justify-content-center">
+      <!-- Imágenes (pre-cargadas + seleccionadas) -->
+      <div *ngFor="let file of files; let i = index; trackBy: trackByFile" class="file-item">
+        <div class="border-round-sm card m-0 flex flex-column align-items-center justify-content-center gap-3" style="height: 120px;">
+          <div class="relative h-full">
+            <img
+              role="presentation"
+              [alt]="file.name"
+              [src]="file.global_url || file.objectURL"
+              height="120"
+              width="120"
+              class="border-round-sm bg-black-alpha-10"
+              style="object-fit: contain;"
+            />
+            <p-button
+              class="delete-button p-0 border-0"
+              icon="pi pi-trash"
+              (click)="onRemoveFile(i)"
+              [raised]="true"
+              severity="danger"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #file></ng-template>
+  <ng-template pTemplate="empty">
+    <div class="flex align-items-center justify-content-center flex-column fileupload-select">
+      <i class="pi pi-image p-0 text-6xl text-primary-600"></i>
+      <p class="mt-2 mb-0 text-primary-600">Arrastre y suelte una imagen.</p>
+    </div>
+  </ng-template>
+</p-fileupload>
+
+<small class="text-xs text-pink-600" style="height: 1em;">
+  {{ errorMessage }}
+</small>

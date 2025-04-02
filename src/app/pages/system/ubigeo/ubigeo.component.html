@@ -1,0 +1,90 @@
+<app-content-header
+  [breadcrumbs]="breadcrumbs"
+  title="UBIGEOS"
+  description="Módulo de gestión de ubigeos">
+</app-content-header>
+
+<div class="mx-3">
+    <p-card>
+            <p-table
+                #dt1
+                [value]="ubigeoStore.entities()"
+                dataKey="id_ubigeo"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [rows]="5"
+                [rowHover]="true"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [paginator]="true"
+                currentPageReportTemplate="Visualizar {first} a {last} de {totalRecords} registros"
+                [globalFilterFields]="['id_ubigeo','id_pais', 'id_departamento','id_provincia']"
+                showGridlines>
+
+                <ng-template #caption>
+                    <div class="flex justify-content-between gap-2">
+                        <p-iconfield>
+                            <p-inputicon styleClass="pi pi-search"/>
+                            <input
+                            type="text"
+                            pInputText
+                            size="small"
+                            class="w-full md:w-14"
+                            placeholder="Buscador"
+                            (input)="dt1.filterGlobal($any($event.target).value, 'contains')"/>
+                        </p-iconfield>
+
+                        <p-button label="Nuevo" icon="pi pi-save" (click)="onOpenModalCreateUser()"/>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            N°
+                        </th>
+                        <th pSortableColumn="id_pais">
+                            Pais <p-sortIcon field="id_pais" />
+                        </th>
+                        <th pSortableColumn="id_departamento">
+                            Departamento <p-sortIcon field="id_departamento" />
+                        </th>
+                        <th pSortableColumn="id_distrito">
+                            Distrito <p-sortIcon field="id_distrito" />
+                        </th>
+                        <th>
+                            Opciones
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-ubigeo let-rowIndex="rowIndex">
+                    <tr [pSelectableRow]="ubigeo">
+                        <td>
+                            {{rowIndex + 1}}
+                        </td>
+                        <td>
+                            {{ ubigeo.id_pais }}
+                        </td>
+                        <td>
+                            {{ ubigeo.id_departamento }}
+                        </td>
+                        <td>
+                            {{ ubigeo.id_distrito }}
+                        </td>
+                        <td class="py-1 text-center">
+                            <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />
+                            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,ubigeo)" [rounded]="true" [text]="true" icon="pi pi-ellipsis-v"/>
+                        </td>
+                    </tr>
+                </ng-template>
+
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">No se encontraron registros.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
+</div>
+
+

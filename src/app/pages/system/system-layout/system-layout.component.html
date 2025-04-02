@@ -1,0 +1,97 @@
+<p-menubar styleClass="border-none border-noround fixed">
+    <ng-template pTemplate="start">
+        <p-button icon="pi pi-bars" [rounded]="true" [text]="true" (click)="toggleSidebar()"/>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+      <div class="flex flex-col justify-content-center align-items-center gap-2">
+
+        <p-button
+        [icon]="toolbarStore.isDarkModeActive() ? 'pi pi-moon' : 'pi pi-sun'"
+         severity="info"
+         [rounded]="true"
+         [text]="true"
+        (click)="toggleDarkMode()"
+        pTooltip="Cambiar de modo"
+        tooltipPosition="left"/>
+
+        <p-avatar
+          label="{{ user().name.charAt(0).toUpperCase() }}"
+            styleClass="ml-4 cursor-pointer"
+            shape="circle"
+            (click)="userMenu.toggle($event)">
+        </p-avatar>
+      </div>
+
+    </ng-template>
+</p-menubar>
+
+<p-menu #userMenu  [model]="userMenuItems" [popup]="true"/>
+
+
+<div class="card flex justify-center">
+    <p-drawer [(visible)]="visibleSidebar"
+      [modal]="false"
+      position="left"
+      closeOnEscape="false"
+      styleClass="border-none border-right-1"
+      [baseZIndex]="2">
+          <ng-template #header>
+              <div class="flex items-center gap-2">
+                  <p-avatar
+                  label="{{ user().name.charAt(0).toUpperCase() }}"
+                  class="mr-2"
+                  shape="circle" />
+                  <span class="inline-flex flex-column">
+                      <span class="font-bold">{{  user().name || 'no hay'}} </span>
+                      <span class="text-sm">{{ user().email || 'no hay' }}</span>
+                  </span>
+              </div>
+          </ng-template>
+
+          <style>
+            .border-color{
+              border: 1px var(--p-panelmenu-panel-border-color) solid;
+              padding: 0.25rem;
+            }
+          </style>
+
+  @for (itemGroup of menu(); track $index) {
+      @if (itemGroup.group) {
+        <div class="w-full px-3 py-2">
+          <span class="font-semibold text-primary">{{itemGroup.label}}</span>
+        </div>
+      }
+      <p-panelmenu [model]="itemGroup.items" styleClass="w-full md:w-80">
+        <ng-template #item let-item>
+            <div pRipple class="flex items-center px-4 py-2 cursor-pointer group" [routerLink]="item.route" [routerLinkActive]="'active-link'" [pTooltip]="item.tooltip" showDelay="1000" hideDelay="300">
+                <i [class]="item.icon + ' text-primary group-hover:text-inherit'"></i>
+                <span class="ml-2">
+                    {{ item.label }}
+                </span>
+                <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded
+                bg-emphasis text-muted-color text-xs p-1">
+                    {{ item.shortcut }}
+                </span>
+                <i *ngIf="item.dropdown" class="ml-auto pi pi-chevron-down ml-2 text-muted group-hover:text-primary"></i>
+            </div>
+        </ng-template>
+      </p-panelmenu>
+      }
+    </p-drawer>
+</div>
+
+<div [ngStyle]="{'margin-left.px': visibleSidebar && isScreenWide && !isMobileDevice  ? 280 : 0, 'transition': 'margin-left 0.3s ease' }"
+     [style]="{height:'calc(100vh)'}"
+     class="flex flex-column justify-content-between container-return">
+  <!-- Main Content -->
+  <div style="margin-top: 49px;">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Footer -->
+  <app-footer-layout/>
+</div>
+
+<app-profile/>

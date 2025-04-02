@@ -1,0 +1,102 @@
+<p-dialog
+header="Editar usuario"
+[modal]="true"
+[breakpoints]="{'575px': '100vw'}"
+[style]="{ width: '500px',maxHeight: '100%'}"
+[draggable]="false"
+[resizable]="false"
+[visible]="userStore.isOpenEdit()"
+(visibleChange)="onCloseModalEdit()">
+
+    <form class="grid pt-2" [formGroup]="frmEdit">
+      <div class="col-12">
+          <p-floatLabel variant="on">
+              <p-select
+                  inputId="employee_id"
+                  formControlName="employee_id"
+                  styleClass="w-full"
+                  appendTo="body"
+                  [options]="employees()"
+                  optionLabel="fullName"
+                  optionValue="id"
+                  [filter]="true"
+                  filterBy="fullName"
+                  emptyFilterMessage="No se encontraron resultados"
+                  emptyMessage="No se encontraron resultados">
+
+                  <ng-template #selectedItem let-selectedOption>
+                      <div class="flex items-center gap-2">
+                          <div>{{ selectedOption.fullName }}</div>
+                      </div>
+                  </ng-template>
+
+                  <ng-template let-option #item>
+                      <div class="flex items-center gap-2">
+                          <div><b>{{option.document_number}} - </b>{{ option.fullName }}</div>
+                      </div>
+                  </ng-template>
+
+              </p-select>
+              <label for="employee_id">Empleado</label>
+          </p-floatLabel>
+
+          <small class="text-xs text-pink-600" style="height: 1em;">
+            {{ getErrorMessageEdit('employee_id') }}
+          </small>
+      </div>
+        <!-- <div class="col-12">
+            <p-floatLabel variant="on">
+                <input pInputText id="name" formControlName="name"  class="w-full"/>
+                <label for="name">Nombre *</label>
+            </p-floatLabel>
+            <small class="text-xs text-pink-600" style="height: 1em;">
+              {{ getErrorMessageEdit('name') }}
+            </small>
+        </div> -->
+        <div class="col-12">
+            <p-floatLabel variant="on">
+                <input pInputText id="email" formControlName="email"  class="w-full"/>
+                <label for="email">Correo *</label>
+            </p-floatLabel>
+            <small class="text-xs text-pink-600" style="height: 1em;">
+              {{ getErrorMessageEdit('email') }}
+            </small>
+        </div>
+        <div class="col-12">
+          <p-floatLabel variant="on">
+              <p-select
+              inputId="role_id"
+              formControlName="role_id"
+              styleClass="w-full"
+              appendTo="body"
+              [options]="roles()"
+              optionLabel="name"
+              optionValue="id"
+              emptyMessage="No se encontraron resultados">
+              </p-select>
+              <label for="role_id">Rol *</label>
+          </p-floatLabel>
+
+            <small class="text-xs text-pink-600" style="height: 1em;">
+              {{ getErrorMessageEdit('role_id') }}
+            </small>
+        </div>
+    </form>
+
+    <ng-template #footer>
+      <p-button
+      label="Cancelar"
+      [text]="true"
+      severity="secondary"
+      (onClick)="onCloseModalEdit()" />
+
+      <p-button
+          [label]="userStore.isSubmitting() ? 'Editando...' : 'Editar'"
+          [icon]="userStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
+          iconPos="left"
+          [disabled]="userStore.isSubmitting()"
+          (onClick)="handleSubmit()">
+      </p-button>
+  </ng-template>
+</p-dialog>
+

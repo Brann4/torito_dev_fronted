@@ -1,0 +1,91 @@
+<app-content-header
+  [breadcrumbs]="breadcrumbs"
+  title="USUARIOS"
+  description="Módulo de gestión de usuarios del sistema">
+</app-content-header>
+
+<div class="mx-3">
+    <p-card>
+            <p-table
+                #dt1
+                [value]="userStore.entities()"
+                dataKey="id"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [rows]="5"
+                [rowHover]="true"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [paginator]="true"
+                currentPageReportTemplate="Visualizar {first} a {last} de {totalRecords} registros"
+                [globalFilterFields]="['id', 'name','role.name','employees[0].name']"
+                showGridlines>
+
+                <ng-template #caption>
+                    <div class="flex justify-content-between gap-2">
+                        <p-iconfield>
+                            <p-inputicon styleClass="pi pi-search"/>
+                            <input
+                            type="text"
+                            pInputText
+                            size="small"
+                            class="w-full md:w-14"
+                            placeholder="Buscador"
+                            (input)="dt1.filterGlobal($any($event.target).value, 'contains')"/>
+                        </p-iconfield>
+
+                        <p-button label="Nuevo" icon="pi pi-save" (click)="onOpenModalCreateUser()"/>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            N°
+                        </th>
+                        <th pSortableColumn="name">
+                            Nombre <p-sortIcon field="name" />
+                        </th>
+                        <th pSortableColumn="email">
+                            Email <p-sortIcon field="email" />
+                        </th>
+                        <th pSortableColumn="role.name">
+                            Rol <p-sortIcon field="role.name" />
+                        </th>
+                        <th>
+                            Opciones
+                        </th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
+                    <tr [pSelectableRow]="user">
+                        <td>
+                            {{rowIndex + 1}}
+                        </td>
+                        <td>
+                            {{ user.name }}
+                        </td>
+                        <td>
+                            {{ user.email }}
+                        </td>
+                        <td>
+                            {{ user.role.name }}
+                        </td>
+                        <td class="py-1 text-center">
+                            <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />
+                            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,user)" [rounded]="true" [text]="true" icon="pi pi-ellipsis-v"/>
+                        </td>
+                    </tr>
+                </ng-template>
+
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">No se encontraron registros.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
+</div>
+
+<app-user-create />
+<app-user-edit />

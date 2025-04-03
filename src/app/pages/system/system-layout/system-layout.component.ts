@@ -162,7 +162,7 @@ export class SystemLayoutComponent implements OnInit{
       ];
     });
 
-    this.visibleSidebar = localStorage.getItem('visibleSidebar') === 'true';
+    //this.visibleSidebar = localStorage.getItem('visibleSidebar') === 'true';
     this.toolbarStore.isDarkModeActive();
   }
 
@@ -193,12 +193,12 @@ export class SystemLayoutComponent implements OnInit{
 
   toggleSidebar(){
     this.visibleSidebar = !this.visibleSidebar;
-    localStorage.setItem('visibleSidebar', this.visibleSidebar ? 'true' : 'false');
+   // localStorage.setItem('visibleSidebar', this.visibleSidebar ? 'true' : 'false');
   }
 
   onSidebarClose(){
     this.visibleSidebar = false;
-    localStorage.setItem('visibleSidebar', 'false');
+   // localStorage.setItem('visibleSidebar', 'false');
   }
 
   @HostListener('window:resize', ['$event'])

@@ -33,7 +33,7 @@
                             (input)="dt1.filterGlobal($any($event.target).value, 'contains')"/>
                         </p-iconfield>
 
-                        <p-button label="Nuevo" icon="pi pi-save" (click)="onOpenModalCreateUbigeo()"/>
+                        <p-button label="Nuevo" icon="pi pi-plus-circle" (click)="onOpenModalCreateUbigeo()"/>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -55,7 +55,7 @@
                         </th>
 
                         <th pSortableColumn="estado">
-                            Descripcion <p-sortIcon field="estado" />
+                            Estado <p-sortIcon field="estado" />
                         </th>
                         <th>
                             Opciones
@@ -77,11 +77,11 @@
                         <td>
                             {{ ubigeo.id_provincia }}
                         </td>
-                        <td class="">
+                        <td >
                              {{ ubigeo.id_distrito }}
                         </td>
                         <td>
-                            <!--<p-tag [value]="ubigeo.estado" severity="getSeverity(ubigeo.estado)" />-->
+                            <p-tag [value]="ubigeo.estado ? 'Activo' : 'Inactivo'" [severity]="$any(ubigeo.estado ? 'success' : 'danger')" />
                         </td>
                         <td class="py-1 text-center">
                             <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />

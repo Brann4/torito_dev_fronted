@@ -20,8 +20,9 @@ export class ContentHeaderComponent implements OnInit {
   @Input() title: string = '';
   @Input() description: string = '';
 
+
   ngOnInit(): void {
-    const homeBreadcrumb: MenuItem = { label: 'Bienvenido', routerLink: '/system/bienvenido' };
+    const homeBreadcrumb: MenuItem = { icon: 'pi pi-home', routerLink: '/system/bienvenido' };
 
     if (!this.breadcrumbs.some(item => item.label === 'Inicio')) {
       this.breadcrumbs = [homeBreadcrumb, ...this.breadcrumbs];

@@ -5,6 +5,7 @@ import {DtoResponseEntidadFinanciera} from '@/app/domain/dtos/system/entidad-fin
 import {DtoEntidadFinancieraCreate} from '@/app/domain/dtos/system/entidad-financiera/DtoEntidadFinancieraCreate';
 import {DtoEntidadFinancieraEdit} from '@/app/domain/dtos/system/entidad-financiera/DtoEntidadFinancieraEdit';
 import {map, Observable} from 'rxjs';
+import { ApiResponse } from '@/app/domain/ApiResponse';
 
 const BASE = environment;
 
@@ -16,11 +17,7 @@ export class EntidadFinancieraService {
   }
 
   list(): Observable<DtoResponseEntidadFinanciera[]> {
-    return this.http.get<{
-      sucess: boolean,
-      message: string,
-      data: DtoResponseEntidadFinanciera[]
-    }>(`${BASE.apiUrl}/EntidadFinanciera/GetEntidadesFinancieras`)
+    return this.http.get<ApiResponse<DtoResponseEntidadFinanciera>>(`${BASE.apiUrl}/EntidadFinanciera/GetEntidadesFinancieras`)
       .pipe(
         map(response => response.data)
       );
@@ -35,6 +32,6 @@ export class EntidadFinancieraService {
   }
 
   delete(id: number) {
-    return this.http.post<{ message: string }>(`${BASE.apiUrl}/EntidadFinanciera/DeleteEntidadFinanciera/`, {id})
+    return this.http.delete<{ message: string }>(`${BASE.apiUrl}/EntidadFinanciera/DeleteEntidadFinanciera/${id}`)
   }
 }

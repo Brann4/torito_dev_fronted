@@ -18,6 +18,7 @@ import {
   EstadoConfirmacionService
 } from '@/app/services/system/mantenimiento/estado-confirmacion/estado-confirmacion.service';
 import {EstadoConfirmacionStore} from '@/stores/system/EstadoConfirmacionStore';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-estado-confirmacion',
@@ -31,7 +32,8 @@ import {EstadoConfirmacionStore} from '@/stores/system/EstadoConfirmacionStore';
     MenuModule,
     IconField,
     InputIcon,
-    ContentHeaderComponent
+    ContentHeaderComponent,
+    TagModule
   ],
   templateUrl: './estado-confirmacion.component.html',
   styleUrl: './estado-confirmacion.component.css'

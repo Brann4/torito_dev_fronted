@@ -16,6 +16,8 @@ import {
   EntidadFinancieraService
 } from '@/app/services/system/mantenimiento/entidad-financiera/entidad-financiera.service';
 import {EntidadFinancieraStore} from '@/stores/system/EntidadFinancieraStore';
+import { TagModule } from 'primeng/tag';
+import { EntidadFinancieraCreateComponent } from "./create/entidad-financiera-create.component";
 
 @Component({
   selector: 'app-entidad-financiera',
@@ -29,8 +31,10 @@ import {EntidadFinancieraStore} from '@/stores/system/EntidadFinancieraStore';
     MenuModule,
     IconField,
     InputIcon,
-    ContentHeaderComponent
-  ],
+    ContentHeaderComponent,
+    TagModule,
+    EntidadFinancieraCreateComponent
+],
   templateUrl: './entidad-financiera.component.html',
   styleUrl: './entidad-financiera.component.css'
 })

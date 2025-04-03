@@ -1,0 +1,69 @@
+<p-dialog header="Crear Entidad Financiera" [modal]="true" [breakpoints]="{'575px': '100vw'}"
+  [style]="{ width: '500px',maxHeight: '100%'}" [draggable]="false" [resizable]="false"
+  [visible]="entidadFinancieraStore.isOpenCreate()" (visibleChange)="onCloseModalCreate()">
+  <form class="grid pt-2" [formGroup]="FormEntidadFinancieraCreate" enctype="multipart/form-data" >
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="nombre" formControlName="nombre" class="w-full" />
+        <label for="nombre">Nombre *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('nombre') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="iniciales" formControlName="iniciales" class="w-full" />
+        <label for="iniciales">Iniciales *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('iniciales') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <label for="logo">Logo *</label>
+        <p-fileUpload #fileUpload 
+            mode="basic" 
+            name="logo"
+            chooseLabel="Seleccionar logo" 
+            chooseIcon="pi pi-upload"
+            accept="image/png" 
+            
+            (onUpload)="onFileSelect($event)"
+            />
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('logo') }}
+      </small>
+    </div>
+
+    <div class="col-12">
+      <label for="estado" class="block mb-2">Estado:</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center">
+            <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado" />
+            <label for="estado" class="ml-2">Activo</label>
+        </div>
+    
+        <div class="flex items-center">
+            <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado" />
+            <label for="estado" class="ml-2">Inactivo</label>
+        </div>
+      </div>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('estado') }}
+      </small>
+    </div>
+
+  </form>
+
+  <ng-template #footer>
+    <p-button label="Cancelar" [text]="true" severity="secondary" (onClick)="onCloseModalCreate()" />
+
+    <p-button [label]="entidadFinancieraStore.isSubmitting() ? 'Guardando...' : 'Guardar'"
+      [icon]="entidadFinancieraStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'" iconPos="left"
+      [disabled]="entidadFinancieraStore.isSubmitting()" (onClick)="handleSubmit()">
+    </p-button>
+  </ng-template>
+</p-dialog>

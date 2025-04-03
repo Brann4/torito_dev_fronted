@@ -17,7 +17,7 @@
                 [rowsPerPageOptions]="[10, 25, 50]"
                 [paginator]="true"
                 currentPageReportTemplate="Visualizar {first} a {last} de {totalRecords} registros"
-                [globalFilterFields]="['id_ubigeo','id_pais', 'id_departamento','id_provincia']"
+                [globalFilterFields]="['id_ubigeo','id_pais', 'id_departamento','id_provincia','id_distrito','estado']"
                 showGridlines>
 
                 <ng-template #caption>
@@ -47,8 +47,15 @@
                         <th pSortableColumn="id_departamento">
                             Departamento <p-sortIcon field="id_departamento" />
                         </th>
+                        <th pSortableColumn="id_provincia">
+                            Provincia <p-sortIcon field="id_provincia" />
+                        </th>
                         <th pSortableColumn="id_distrito">
                             Distrito <p-sortIcon field="id_distrito" />
+                        </th>
+
+                        <th pSortableColumn="estado">
+                            Descripcion <p-sortIcon field="estado" />
                         </th>
                         <th>
                             Opciones
@@ -68,7 +75,13 @@
                             {{ ubigeo.id_departamento }}
                         </td>
                         <td>
-                            {{ ubigeo.id_distrito }}
+                            {{ ubigeo.id_provincia }}
+                        </td>
+                        <td class="">
+                             {{ ubigeo.id_distrito }}
+                        </td>
+                        <td>
+                            <!--<p-tag [value]="ubigeo.estado" severity="getSeverity(ubigeo.estado)" />-->
                         </td>
                         <td class="py-1 text-center">
                             <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />

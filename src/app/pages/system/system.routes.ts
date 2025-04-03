@@ -11,6 +11,7 @@ import {EstadoConfirmacionComponent} from '@/app/pages/system/estado-confirmacio
 import {EntidadFinancieraComponent} from '@/app/pages/system/entidad-financiera/entidad-financiera.component';
 
 export const SYSTEM_ROUTES: Routes = [
+
   {
     path: '', component: SystemLayoutComponent, children: [
       {path: '', redirectTo: 'bienvenido', pathMatch: 'full'},

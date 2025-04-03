@@ -14,6 +14,8 @@ export const localeEs = {
 //INITIAL CONSTANTS
 export const INITIAL_POINT = [-70.2489, -18.0052]
 
+export type TAG_STATUS = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast' | undefined
+
 //VALIDATION CONSTANTS
 export const LENGTH_RUC = 11
 export const LENGTH_DNI = 8

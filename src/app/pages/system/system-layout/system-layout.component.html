@@ -30,7 +30,7 @@
 
 
 <div class="card flex justify-center">
-    <p-drawer [(visible)]="visibleSidebar"
+    <p-drawer [style]="{'background-color': '#3e4ec1', 'color':'#fff'}" [(visible)]="visibleSidebar"
       [modal]="false"
       position="left"
       closeOnEscape="false"
@@ -59,7 +59,7 @@
   @for (itemGroup of menu(); track $index) {
       @if (itemGroup.group) {
         <div class="w-full px-3 py-2">
-          <span class="font-semibold text-primary">{{itemGroup.label}}</span>
+          <span class="font-semibold ">{{itemGroup.label}}</span>
         </div>
       }
       <p-panelmenu [model]="itemGroup.items" styleClass="w-full md:w-80">

@@ -10,7 +10,7 @@ export type EntidadFinancieraState = {
   entities: DtoResponseEntidadFinanciera[];
   isOpenCreate: boolean;
   isOpenEdit: boolean;
-  entityEdit: DtoEntidadFinancieraEdit | null;
+  entityEdit: DtoResponseEntidadFinanciera | null;
   isSubmitting: boolean;
 };
 const initialState: EntidadFinancieraState = {
@@ -30,7 +30,7 @@ export const EntidadFinancieraStore = signalStore(
       patchState(state, {isOpenCreate: true});
     },
 
-    openModalEdit(entity: DtoEntidadFinancieraEdit) {
+    openModalEdit(entity: DtoResponseEntidadFinanciera) {
       patchState(state, {entityEdit: entity, isOpenEdit: true});
     },
 

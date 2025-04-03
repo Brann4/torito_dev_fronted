@@ -72,16 +72,6 @@ export class UbigeoComponent {
   constructor() {
     this.loadlTableUbigeos();
   }
-
-  getSeverity(status: boolean) {
-    switch (status) {
-      case true:
-        return 'success';
-      case false:
-        return 'warning';
-    }
-  }
-  
   onSuccessCreate() {
     console.log('onSuccessCreate');
     this.loadlTableUbigeos();

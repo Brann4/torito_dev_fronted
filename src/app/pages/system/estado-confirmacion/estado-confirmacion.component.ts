@@ -19,12 +19,17 @@ import {
 import {
   EstadoConfirmacionService
 } from '@/app/services/system/mantenimiento/estado-confirmacion/estado-confirmacion.service';
+
 import {
   EstadoConfirmacionCreateComponent
 } from '@/app/pages/system/estado-confirmacion/create/estado-confirmacion-create.component';
 import {
   EstadoConfirmacionEditComponent
 } from '@/app/pages/system/estado-confirmacion/edit/estado-confirmacion-edit.component';
+
+import {EstadoConfirmacionStore} from '@/stores/system/EstadoConfirmacionStore';
+import { TagModule } from 'primeng/tag';
+
 
 @Component({
   selector: 'app-estado-confirmacion',
@@ -42,6 +47,7 @@ import {
     TagModule,
     EstadoConfirmacionCreateComponent,
     EstadoConfirmacionEditComponent
+
   ],
   templateUrl: './estado-confirmacion.component.html',
   styleUrl: './estado-confirmacion.component.css'

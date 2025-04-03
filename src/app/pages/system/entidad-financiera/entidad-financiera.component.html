@@ -65,16 +65,17 @@
             {{rowIndex + 1}}
           </td>
           <td>
+            {{ entidadfinanciera.logo }}
+          </td>
+          <td>
             {{ entidadfinanciera.nombre }}
           </td>
           <td>
             {{ entidadfinanciera.iniciales }}
           </td>
+
           <td>
-            {{ entidadfinanciera.logo }}
-          </td>
-          <td>
-            {{ entidadfinanciera.estado }}
+            <p-tag [value]="entidadfinanciera.estado ? 'Activo' : 'Inactivo'" [severity]="$any(entidadfinanciera.estado ? 'success' : 'danger')" /> 
           </td>
           <td class="py-1 text-center">
             <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />
@@ -93,5 +94,7 @@
   </p-card>
 </div>
 
+
+<app-entidad-financiera-create />
 
 

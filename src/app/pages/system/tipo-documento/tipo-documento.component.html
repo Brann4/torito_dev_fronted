@@ -42,10 +42,12 @@
             N°
           </th>
           <th pSortableColumn="id_descripcion">
-            Descripcion <p-sortIcon field="id_descripcion" />
+            Descripcion
+            <p-sortIcon field="id_descripcion"/>
           </th>
           <th pSortableColumn="id_estado">
-            Estado <p-sortIcon field="id_estado" />
+            Estado
+            <p-sortIcon field="id_estado"/>
           </th>
           <th>
             Opciones
@@ -56,7 +58,7 @@
       <ng-template pTemplate="body" let-tipodocumento let-rowIndex="rowIndex">
         <tr [pSelectableRow]="tipodocumento">
           <td>
-            {{rowIndex + 1}}
+            {{ rowIndex + 1 }}
           </td>
           <td>
             {{ tipodocumento.descripcion }}
@@ -65,12 +67,12 @@
             {{ tipodocumento.estado }}
           </td>
           <td class="py-1 text-center">
-            <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />
-            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,tipodocumento)" [rounded]="true" [text]="true" icon="pi pi-ellipsis-v"/>
+            <p-menu #menu [model]="options()" appendTo="body" [popup]="true"/>
+            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,tipodocumento)" [rounded]="true" [text]="true"
+                      icon="pi pi-ellipsis-v"/>
           </td>
         </tr>
       </ng-template>
-
 
       <ng-template pTemplate="emptymessage">
         <tr>
@@ -80,3 +82,6 @@
     </p-table>
   </p-card>
 </div>
+
+<app-tipo-documento-create/>
+<app-tipo-documento-edit/>

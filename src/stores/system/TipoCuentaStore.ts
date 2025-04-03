@@ -1,5 +1,4 @@
 import {DtoResponseTipoCuenta} from '@/app/domain/dtos/system/tipo-cuenta/DtoResponseTipoCuenta';
-import {DtoTipoCuentaEdit} from '@/app/domain/dtos/system/tipo-cuenta/DtoTipoCuentaEdit';
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {inject} from '@angular/core';
 import {TipoCuentaService} from '@/app/services/system/mantenimiento/tipo-cuenta/tipo-cuenta.service';
@@ -8,7 +7,7 @@ export type TipoCuentaState = {
   entities: DtoResponseTipoCuenta[];
   isOpenCreate: boolean;
   isOpenEdit: boolean;
-  entityEdit: DtoTipoCuentaEdit | null;
+  entityEdit: DtoResponseTipoCuenta | null;
   isSubmitting: boolean;
 };
 const initialState: TipoCuentaState = {
@@ -28,7 +27,7 @@ export const TipoCuentaStore = signalStore(
       patchState(state, {isOpenCreate: true});
     },
 
-    openModalEdit(entity: DtoTipoCuentaEdit) {
+    openModalEdit(entity: DtoResponseTipoCuenta) {
       patchState(state, {entityEdit: entity, isOpenEdit: true});
     },
 

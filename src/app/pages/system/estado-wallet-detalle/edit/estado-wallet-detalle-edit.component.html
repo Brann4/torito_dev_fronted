@@ -1,0 +1,66 @@
+<p-dialog
+  header="Editar Estado Wallet Detalle"
+  [modal]="true"
+  [breakpoints]="{'575px': '100vw'}"
+  [style]="{ width: '500px',maxHeight: '100%'}"
+  [draggable]="false"
+  [resizable]="false"
+  [visible]="estadoWalletDetalleStore.isOpenEdit()"
+  (visibleChange)="onCloseModalEdit()">
+
+  <form class="grid pt-2" [formGroup]="FormEstadoWalletDetalleUpdate">
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText [disabled]="true" id="id_estado_wallet_detalle" formControlName="id_estado_wallet_detalle"
+               class="w-full"/>
+        <label for="id_estado_wallet_detalle">Id</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('id_estado_wallet_detalle') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="descripcion" formControlName="descripcion" class="w-full"/>
+        <label for="descripcion">Descripción</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('descripcion') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <label for="estado" class="block mb-2">Estado:</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado"/>
+          <label for="estado" class="ml-2">Activo</label>
+        </div>
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado"/>
+          <label for="estado" class="ml-2">Inactivo</label>
+        </div>
+      </div>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('estado') }}
+      </small>
+    </div>
+  </form>
+
+  <ng-template #footer>
+    <p-button
+      label="Cancelar"
+      [text]="true"
+      severity="secondary"
+      (onClick)="onCloseModalEdit()"/>
+
+    <p-button
+      [label]="estadoWalletDetalleStore.isSubmitting() ? 'Editando...' : 'Editar'"
+      [icon]="estadoWalletDetalleStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
+      iconPos="left"
+      [disabled]="estadoWalletDetalleStore.isSubmitting()"
+      (onClick)="handleSubmit()">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+

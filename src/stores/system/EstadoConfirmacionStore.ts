@@ -1,14 +1,13 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {inject} from '@angular/core';
 import {DtoResponseEstadoConfirmacion} from '@/app/domain/dtos/system/estado-confirmacion/DtoResponseEstadoConfirmacion';
-import {DtoEstadoConfirmacionEdit} from '@/app/domain/dtos/system/estado-confirmacion/DtoEstadoConfirmacionEdit';
 import {EstadoConfirmacionService} from '@/app/services/system/mantenimiento/estado-confirmacion/estado-confirmacion.service';
 
 export type EstadoConfirmacionState = {
   entities: DtoResponseEstadoConfirmacion[];
   isOpenCreate: boolean;
   isOpenEdit: boolean;
-  entityEdit: DtoEstadoConfirmacionEdit | null;
+  entityEdit: DtoResponseEstadoConfirmacion | null;
   isSubmitting: boolean;
 };
 const initialState: EstadoConfirmacionState = {
@@ -28,7 +27,7 @@ export const EstadoConfirmacionStore = signalStore(
       patchState(state, {isOpenCreate: true});
     },
 
-    openModalEdit(entity: DtoEstadoConfirmacionEdit) {
+    openModalEdit(entity: DtoResponseEstadoConfirmacion) {
       patchState(state, {entityEdit: entity, isOpenEdit: true});
     },
 

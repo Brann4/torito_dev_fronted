@@ -15,9 +15,7 @@ import { ConfirmationService } from 'primeng/api';
 import { UbigeoService } from '@/app/services/system/mantenimiento/ubigeo/ubigeo.service';
 import { HelperStore } from '@/stores/HelpersStore';
 import { UbigeosStore } from '@/stores/system/UbigeoStore';
-import { UbigeoEntity } from '@/app/domain/entities/UbigeoEntity';
 import {  } from '@/app/domain/dtos/system/ubigeo/DtoUbigeoEdit';
-import { UserEntity } from '@/app/domain/entities/UserEntity';
 import { DtoResponseUbigeo } from '@/app/domain/dtos/system/ubigeo/DtoResponseUbigeo';
 
 @Component({
@@ -30,12 +28,12 @@ import { DtoResponseUbigeo } from '@/app/domain/dtos/system/ubigeo/DtoResponseUb
     CardModule,
     ButtonModule,
     MenuModule,
-    UbigeoCreateComponent,
-    UbigeoEditComponent,
     IconField,
     InputIcon,
     ContentHeaderComponent,
-  ],
+    UbigeoCreateComponent,
+    UbigeoEditComponent
+],
   templateUrl: './ubigeo.component.html',
   styleUrl: './ubigeo.component.css',
 })
@@ -53,11 +51,11 @@ export class UbigeoComponent {
       label: 'Opciones',
       items: [
           {
-             /* label: 'Editar',
+              label: 'Editar',
               icon: 'pi pi-pen-to-square',
               command: () => {
                 this.onEdit(this.selectedRow());
-              }*/
+              }
           },
           {
               label: 'Eliminar',
@@ -70,28 +68,28 @@ export class UbigeoComponent {
   ]);
 
   constructor(){
-      this.loadTableUsers()
+      this.loadlTableUbigeos()
     }
-  
+
     onSuccessCreate(){
       console.log("onSuccessCreate");
-      this.loadTableUsers()
+      this.loadlTableUbigeos()
     }
-  
-    loadTableUsers(){
+
+    loadlTableUbigeos(){
       this.ubigeoStore.doList();
     }
-  
-    onOpenModalCreateUser(){
+
+    onOpenModalCreateUbigeo(){
       this.ubigeoStore.openModalCreate()
     }
-  
+
     onEdit(ubigeoEdit : DtoResponseUbigeo|null){
       if(ubigeoEdit){
         this.ubigeoStore.openModalEdit(ubigeoEdit)
       }
     }
-    
+
     onDelete(entity : DtoResponseUbigeo|null){
       if(entity){
         this.confirmationService.confirm({
@@ -126,12 +124,12 @@ export class UbigeoComponent {
             this.helperStore.showToast({severity: 'warn', summary: 'Cancelado', detail: 'Ha cancelado la eliminación' })
           }
         })
-  
+
       }else{
         console.warn("El ubigeo para eliminar no esta seleccionado")
       }
     }
-  
+
     onOpenMenuOptionsRowTable(event : MouseEvent, menu : any, row : any){
       this.selectedRow.update(() => row)
       menu.toggle(event)

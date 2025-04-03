@@ -9,7 +9,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
 export type UbigeoState = {
   entities: DtoResponseUbigeo[];
-  isOpenCreate: boolean; 
+  isOpenCreate: boolean;
   isOpenEdit: boolean;
   entityEdit: DtoUbigeoEdit | null;
   isSubmitting: boolean;

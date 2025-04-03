@@ -41,7 +41,7 @@ import { ContentHeaderComponent } from '@/app/components/content-header/content-
   providers : [
     MessageService
   ],
-  
+
 })
 export class UserComponent {
   breadcrumbs = [{ label: 'Usuarios' }]
@@ -95,7 +95,7 @@ export class UserComponent {
       this.userStore.openModalEdit(userEdit)
     }
   }
-  
+
   onDelete(entity : UserEntity|null){
     if(entity){
       this.confirmationService.confirm({

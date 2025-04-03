@@ -8,6 +8,7 @@ import {
   DtoEstadoWalletDetalleCreate
 } from '@/app/domain/dtos/system/estado-wallet-detalle/DtoEstadoWalletDetalleCreate';
 import {DtoEstadoWalletDetalleEdit} from '@/app/domain/dtos/system/estado-wallet-detalle/DtoEstadoWalletDetalleEdit';
+import {ApiResponse} from '@/app/domain/ApiResponse';
 import {map, Observable} from 'rxjs';
 
 const BASE = environment;
@@ -20,11 +21,7 @@ export class EstadoWalletDetalleService {
   }
 
   list(): Observable<DtoResponseEstadoWalletDetalle[]> {
-    return this.http.get<{
-      sucess: boolean,
-      message: string,
-      data: DtoResponseEstadoWalletDetalle[]
-    }>(`${BASE.apiUrl}/EstadoWalletDetalle/GetEstadosWalletDetalle`)
+    return this.http.get<ApiResponse<DtoResponseEstadoWalletDetalle>>(`${BASE.apiUrl}/EstadoWalletDetalle/GetEstadosWalletDetalle`)
       .pipe(
         map(response => response.data)
       );
@@ -39,6 +36,6 @@ export class EstadoWalletDetalleService {
   }
 
   delete(id: number) {
-    return this.http.post<{ message: string }>(`${BASE.apiUrl}/EstadoWalletDetalle/DeleteEstadoWalletDetalle/`, {id})
+    return this.http.get<{ message: string }>(`${BASE.apiUrl}/EstadoWalletDetalle/DeleteEstadoWalletDetalle/${id}`)
   }
 }

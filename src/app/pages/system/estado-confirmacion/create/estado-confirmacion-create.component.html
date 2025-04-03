@@ -1,0 +1,49 @@
+<p-dialog header="Crear Estado Confirmacion" [modal]="true" [breakpoints]="{'575px': '100vw'}"
+          [style]="{ width: '500px',maxHeight: '100%'}" [draggable]="false" [resizable]="false"
+          [visible]="estadoConfirmacionStore.isOpenCreate()" (visibleChange)="onCloseModalCreate()">
+  <form class="grid pt-2" [formGroup]="FormEstadoConfirmacionCreate">
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="descripcion" formControlName="descripcion" class="w-full"/>
+        <label for="descripcion">Descripción *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('descripcion') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <textarea rows="5" cols="30" pTextarea id="mensaje" formControlName="mensaje" [autoResize]="false"
+                  class="w-full"></textarea>
+        <label for="mensaje">Mensaje *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('mensaje') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <label for="estado" class="block mb-2">Estado:</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado"/>
+          <label for="estado" class="ml-2">Activo</label>
+        </div>
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado"/>
+          <label for="estado" class="ml-2">Inactivo</label>
+        </div>
+      </div>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('estado') }}
+      </small>
+    </div>
+  </form>
+  <ng-template #footer>
+    <p-button label="Cancelar" [text]="true" severity="secondary" (onClick)="onCloseModalCreate()"/>
+
+    <p-button [label]="estadoConfirmacionStore.isSubmitting() ? 'Guardando...' : 'Guardar'"
+              [icon]="estadoConfirmacionStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'" iconPos="left"
+              [disabled]="estadoConfirmacionStore.isSubmitting()" (onClick)="handleSubmit()">
+    </p-button>
+  </ng-template>
+</p-dialog>

@@ -1,10 +1,10 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-
 import {environment} from '@/environments/environment.development';
 import {DtoResponseTipoDocumento} from '@/app/domain/dtos/system/tipo-documento/DtoResponseTipoDocumento';
 import {DtoTipoDocumentoCreate} from '@/app/domain/dtos/system/tipo-documento/DtoTipoDocumentoCreate';
 import {DtoTipoDocumentoEdit} from '@/app/domain/dtos/system/tipo-documento/DtoTipoDocumentoEdit';
+import {ApiResponse} from '@/app/domain/ApiResponse';
 import {map, Observable} from 'rxjs';
 
 const BASE = environment;
@@ -17,11 +17,7 @@ export class TipoDocumentoService {
   }
 
   list(): Observable<DtoResponseTipoDocumento[]> {
-    return this.http.get<{
-      sucess: boolean,
-      message: string,
-      data: DtoResponseTipoDocumento[]
-    }>(`${BASE.apiUrl}/TipoDocumento/GetTiposDocumento`)
+    return this.http.get<ApiResponse<DtoResponseTipoDocumento>>(`${BASE.apiUrl}/TipoDocumento/GetTiposDocumento`)
       .pipe(
         map(response => response.data)
       );
@@ -36,6 +32,6 @@ export class TipoDocumentoService {
   }
 
   delete(id: number) {
-    return this.http.post<{ message: string }>(`${BASE.apiUrl}/TipoDocumento/DeleteTipoDocumento/`, {id})
+    return this.http.get<{ message: string }>(`${BASE.apiUrl}/TipoDocumento/DeleteTipoDocumento/${id}`,)
   }
 }

@@ -42,10 +42,12 @@
             N°
           </th>
           <th pSortableColumn="id_descripcion">
-            Descripcion <p-sortIcon field="id_descripcion" />
+            Descripcion
+            <p-sortIcon field="id_descripcion"/>
           </th>
           <th pSortableColumn="id_estado">
-            Estado <p-sortIcon field="id_estado" />
+            Estado
+            <p-sortIcon field="id_estado"/>
           </th>
           <th>
             Opciones
@@ -56,7 +58,7 @@
       <ng-template pTemplate="body" let-estadowalletdetalle let-rowIndex="rowIndex">
         <tr [pSelectableRow]="estadowalletdetalle">
           <td>
-            {{rowIndex + 1}}
+            {{ rowIndex + 1 }}
           </td>
           <td>
             {{ estadowalletdetalle.descripcion }}
@@ -65,8 +67,9 @@
             {{ estadowalletdetalle.estado }}
           </td>
           <td class="py-1 text-center">
-            <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />
-            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,estadowalletdetalle)" [rounded]="true" [text]="true" icon="pi pi-ellipsis-v"/>
+            <p-menu #menu [model]="options()" appendTo="body" [popup]="true"/>
+            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,estadowalletdetalle)" [rounded]="true"
+                      [text]="true" icon="pi pi-ellipsis-v"/>
           </td>
         </tr>
       </ng-template>
@@ -81,3 +84,5 @@
   </p-card>
 </div>
 
+<app-estado-wallet-detalle-create/>
+<app-estado-wallet-detalle-edit/>

@@ -3,7 +3,6 @@ import {inject} from '@angular/core';
 import {
   DtoResponseEstadoWalletDetalle
 } from '@/app/domain/dtos/system/estado-wallet-detalle/DtoResponseEstadoWalletDetalle';
-import {DtoEstadoWalletDetalleEdit} from '@/app/domain/dtos/system/estado-wallet-detalle/DtoEstadoWalletDetalleEdit';
 import {
   EstadoWalletDetalleService
 } from '@/app/services/system/mantenimiento/estado-wallet-detalle/estado-wallet-detalle.service';
@@ -12,7 +11,7 @@ export type EstadoWalletDetalleState = {
   entities: DtoResponseEstadoWalletDetalle[];
   isOpenCreate: boolean;
   isOpenEdit: boolean;
-  entityEdit: DtoEstadoWalletDetalleEdit | null;
+  entityEdit: DtoResponseEstadoWalletDetalle | null;
   isSubmitting: boolean;
 };
 const initialState: EstadoWalletDetalleState = {
@@ -32,7 +31,7 @@ export const EstadoWalletDetalleStore = signalStore(
       patchState(state, {isOpenCreate: true});
     },
 
-    openModalEdit(entity: DtoEstadoWalletDetalleEdit) {
+    openModalEdit(entity: DtoResponseEstadoWalletDetalle) {
       patchState(state, {entityEdit: entity, isOpenEdit: true});
     },
 

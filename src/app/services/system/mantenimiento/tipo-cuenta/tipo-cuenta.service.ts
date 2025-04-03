@@ -4,6 +4,7 @@ import {environment} from '@/environments/environment.development';
 import {DtoResponseTipoCuenta} from '@/app/domain/dtos/system/tipo-cuenta/DtoResponseTipoCuenta';
 import {DtoTipoCuentaCreate} from '@/app/domain/dtos/system/tipo-cuenta/DtoTipoCuentaCreate';
 import {DtoTipoCuentaEdit} from '@/app/domain/dtos/system/tipo-cuenta/DtoTipoCuentaEdit';
+import {ApiResponse} from '@/app/domain/ApiResponse';
 import {map, Observable} from 'rxjs';
 
 const BASE = environment;
@@ -16,11 +17,7 @@ export class TipoCuentaService {
   }
 
   list(): Observable<DtoResponseTipoCuenta[]> {
-    return this.http.get<{
-      sucess: boolean,
-      message: string,
-      data: DtoResponseTipoCuenta[]
-    }>(`${BASE.apiUrl}/TipoCuenta/GetTiposCuenta`)
+    return this.http.get<ApiResponse<DtoResponseTipoCuenta>>(`${BASE.apiUrl}/TipoCuenta/GetTiposCuenta`)
       .pipe(
         map(response => response.data)
       );
@@ -35,6 +32,6 @@ export class TipoCuentaService {
   }
 
   delete(id: number) {
-    return this.http.post<{ message: string }>(`${BASE.apiUrl}/TipoCuenta/DeleteTipoCuenta/`, {id})
+    return this.http.get<{ message: string }>(`${BASE.apiUrl}/TipoCuenta/DeleteTipoCuenta/${id}`)
   }
 }

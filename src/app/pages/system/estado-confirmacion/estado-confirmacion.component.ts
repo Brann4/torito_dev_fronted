@@ -11,13 +11,20 @@ import {IconField} from 'primeng/iconfield';
 import {ContentHeaderComponent} from '@/app/components/content-header/content-header.component';
 import {ConfirmationService} from 'primeng/api';
 import {HelperStore} from '@/stores/HelpersStore';
+import {TagModule} from 'primeng/tag';
+import {EstadoConfirmacionStore} from '@/stores/system/EstadoConfirmacionStore';
 import {
   DtoResponseEstadoConfirmacion
 } from '@/app/domain/dtos/system/estado-confirmacion/DtoResponseEstadoConfirmacion';
 import {
   EstadoConfirmacionService
 } from '@/app/services/system/mantenimiento/estado-confirmacion/estado-confirmacion.service';
-import {EstadoConfirmacionStore} from '@/stores/system/EstadoConfirmacionStore';
+import {
+  EstadoConfirmacionCreateComponent
+} from '@/app/pages/system/estado-confirmacion/create/estado-confirmacion-create.component';
+import {
+  EstadoConfirmacionEditComponent
+} from '@/app/pages/system/estado-confirmacion/edit/estado-confirmacion-edit.component';
 
 @Component({
   selector: 'app-estado-confirmacion',
@@ -31,7 +38,10 @@ import {EstadoConfirmacionStore} from '@/stores/system/EstadoConfirmacionStore';
     MenuModule,
     IconField,
     InputIcon,
-    ContentHeaderComponent
+    ContentHeaderComponent,
+    TagModule,
+    EstadoConfirmacionCreateComponent,
+    EstadoConfirmacionEditComponent
   ],
   templateUrl: './estado-confirmacion.component.html',
   styleUrl: './estado-confirmacion.component.css'
@@ -47,8 +57,23 @@ export class EstadoConfirmacionComponent {
   options = signal([
     {
       label: 'Opciones',
-      items: []
-    }
+      items: [
+        {
+          label: 'Editar',
+          icon: 'pi pi-pen-to-square',
+          command: () => {
+            this.onEdit(this.selectedRow());
+          },
+        },
+        {
+          label: 'Eliminar',
+          icon: 'pi pi-trash',
+          command: () => {
+            this.onDelete(this.selectedRow());
+          },
+        },
+      ],
+    },
   ]);
 
   constructor() {
@@ -72,4 +97,62 @@ export class EstadoConfirmacionComponent {
     this.selectedRow.update(() => row)
     menu.toggle(event)
   }
+
+  onEdit(estadoConfirmacionEdit: DtoResponseEstadoConfirmacion | null) {
+    if (estadoConfirmacionEdit) {
+      this.estadoConfirmacionStore.openModalEdit(estadoConfirmacionEdit);
+    }
+  }
+
+  onDelete(entity: DtoResponseEstadoConfirmacion | null) {
+    if (entity) {
+      this.confirmationService.confirm({
+        message: '¿Estás seguro de que quieres continuar?',
+        header: 'Confirmación',
+        icon: 'pi pi-exclamation-triangle',
+        rejectButtonProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true,
+        },
+        acceptButtonProps: {
+          severity: 'danger',
+          label: 'Eliminar',
+        },
+        acceptIcon: 'pi pi-check',
+        rejectIcon: 'pi pi-times',
+        rejectButtonStyleClass: 'p-button-text',
+        accept: () => {
+          this.estadoConfirmacionService.delete(entity.id_estado_confirmacion).subscribe({
+            next: (response) => {
+              this.estadoConfirmacionStore.doList();
+              this.helperStore.showToast({
+                severity: 'success',
+                summary: 'Eliminado',
+                detail: response.message,
+              });
+            },
+            error: (error) => {
+              console.error(error);
+              this.helperStore.showToast({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No se pudo eliminar',
+              });
+            },
+          });
+        },
+        reject: () => {
+          this.helperStore.showToast({
+            severity: 'warn',
+            summary: 'Cancelado',
+            detail: 'Ha cancelado la eliminación',
+          });
+        },
+      });
+    } else {
+      console.warn('El ubigeo para eliminar no esta seleccionado');
+    }
+  }
+
 }

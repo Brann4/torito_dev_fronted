@@ -21,7 +21,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { RadioButton } from 'primeng/radiobutton';
 
-
 @Component({
   selector: 'app-ubigeo-create',
   standalone: true,
@@ -39,63 +38,91 @@ import { RadioButton } from 'primeng/radiobutton';
   ],
   templateUrl: './ubigeo-create.component.html',
 })
+
+
+
 export class UbigeoCreateComponent implements OnInit {
   helperStore = inject(HelperStore);
   ubigeoStore = inject(UbigeosStore);
   ubigeoService = inject(UbigeoService);
   formBuilder = inject(FormBuilder);
-  isActive = signal<boolean>(false)
-
+  isActive!: boolean;
+  
 
   FormUbigeoCreate = this.formBuilder.group({
-    id_pais: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(2)], nonNullable: true }),
-    id_departamento: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(2)], nonNullable: true }),
-    id_provincia: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(2)], nonNullable: true }),
-    id_distrito: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(2)], nonNullable: true }),
-    descripcion: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(2)], nonNullable: true }),
-    estado: new FormControl<boolean>(false, { validators: [Validators.required], nonNullable: true }),
-  })
+    id_pais: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(1)],
+      nonNullable: true,
+    }),
+    id_departamento: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(1)],
+      nonNullable: true,
+    }),
+    id_provincia: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(1)],
+      nonNullable: true,
+    }),
+    id_distrito: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(1)],
+      nonNullable: true,
+    }),
+    descripcion: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(1)],
+      nonNullable: true,
+    }),
+    estado: new FormControl<boolean>(false, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+  });
 
-  isSubmitting = signal<boolean>(false)
+  isSubmitting = signal<boolean>(false);
 
-
-
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onCloseModalCreate() {
-    this.ubigeoStore.closeModalCreate()
-    this.FormUbigeoCreate.reset()
+    this.ubigeoStore.closeModalCreate();
+    this.FormUbigeoCreate.reset();
   }
 
-  getErrorMessageOnCreate(controlName:string):string{
-    const control = this.FormUbigeoCreate.get(controlName as string)
-    return getErrorByKey(controlName,control)
+  getErrorMessageOnCreate(controlName: string): string {
+    const control = this.FormUbigeoCreate.get(controlName as string);
+    return getErrorByKey(controlName, control);
   }
 
-  handleSubmit(){
-    this.FormUbigeoCreate.markAllAsTouched()
+  handleSubmit() {
+    this.FormUbigeoCreate.markAllAsTouched();
 
-    if(this.FormUbigeoCreate.status === 'VALID'){
-      this.isSubmitting.set(true)
-      const selectedValues = this.FormUbigeoCreate.getRawValue()
+    if (this.FormUbigeoCreate.valid) {
+      this.isSubmitting.set(true);
+      const selectedValues = this.FormUbigeoCreate.getRawValue();
 
-      this.ubigeoService.store(selectedValues as DtoUbigeoCreate)
-        .subscribe({
-          next: (response) =>  {
-            this.isSubmitting.set(false)
-            this.onCloseModalCreate()
-            this.helperStore.showToast({severity : 'success', summary : 'Ubigeo registrado', detail : response.message})
-            this.ubigeoStore.doList()
-          },
-          error: (err) => {
-            this.isSubmitting.set(false)
-            this.helperStore.showToast({severity : 'error', summary : 'Error', detail : err.message})
-          }
-
-        })
-    }
-    else{
-      this.helperStore.showToast({severity : 'error', summary : 'Error', detail : 'Complete los campos requeridos'})
+      this.ubigeoService.store(selectedValues as DtoUbigeoCreate).subscribe({
+        next: (response) => {
+          this.isSubmitting.set(false);
+          this.onCloseModalCreate();
+          this.helperStore.showToast({
+            severity: 'success',
+            summary: 'Ubigeo registrado',
+            detail: response.message,
+          });
+          this.ubigeoStore.doList();
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          this.helperStore.showToast({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.message,
+          });
+        },
+      });
+    } else {
+      this.helperStore.showToast({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Complete los campos requeridos',
+      });
     }
   }
 }

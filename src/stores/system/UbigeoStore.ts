@@ -11,9 +11,10 @@ export type UbigeoState = {
   entities: DtoResponseUbigeo[];
   isOpenCreate: boolean;
   isOpenEdit: boolean;
-  entityEdit: DtoUbigeoEdit | null;
+  entityEdit: DtoResponseUbigeo | null;
   isSubmitting: boolean;
 };
+
 const initialState: UbigeoState = {
   isOpenCreate: false,
   isOpenEdit: false,
@@ -31,7 +32,7 @@ export const UbigeosStore = signalStore(
       patchState(state, { isOpenCreate: true });
     },
 
-    openModalEdit(entity: DtoUbigeoEdit) {
+    openModalEdit(entity: DtoResponseUbigeo) {
       patchState(state, { entityEdit: entity, isOpenEdit: true });
     },
 

@@ -49,16 +49,23 @@
       </small>
     </div>
 
-    <!-- TODO: SOME RADIO BUTONS FUNCTIONAL-->
     <div class="col-12">
-      <div class="ui-g-12">
-        <p-radioButton name="group1" value="1" label="Option 1" formControlName="myRadio" inputId="opt1"></p-radioButton>
+      <label for="estado" class="block mb-2">Estado:</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center">
+            <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado" />
+            <label for="estado" class="ml-2">Activo</label>
+        </div>
+    
+        <div class="flex items-center">
+            <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado" />
+            <label for="estado" class="ml-2">Inactivo</label>
+        </div>
       </div>
-      <div class="ui-g-12">
-        <p-radioButton name="group1" value="0" label="Option 2" formControlName="myRadio"  inputId="opt2"></p-radioButton>
-      </div>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('estado') }}
+      </small>
     </div>
-
 
   </form>
 

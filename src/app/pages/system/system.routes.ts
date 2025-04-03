@@ -14,10 +14,6 @@ export const SYSTEM_ROUTES: Routes = [
             { path: 'usuarios', component: UserComponent },
             { path: 'dashboard', component: DashboardComponent },
             { path: 'ubigeo', component: UbigeoComponent},
-
         ],
-        // canActivate: [
-        //     authGuard
-        // ]
     },
 ];

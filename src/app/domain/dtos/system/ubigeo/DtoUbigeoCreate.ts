@@ -4,7 +4,7 @@ export interface DtoUbigeoCreate {
     id_provincia:         string;
     id_distrito:          string;
     descripcion:          string;
-    estado:               boolean | null;
+    estado:               boolean;
     fecha_creacion:       Date | null;
     usuario_creacion:     number | null;
 }

@@ -7,6 +7,7 @@ import { DtoUbigeoCreate } from '@/app/domain/dtos/system/ubigeo/DtoUbigeoCreate
 import { DtoUbigeoEdit } from '@/app/domain/dtos/system/ubigeo/DtoUbigeoEdit';
 import { DtoResponseUbigeo } from '@/app/domain/dtos/system/ubigeo/DtoResponseUbigeo';
 import { map, Observable } from 'rxjs';
+import { ApiResponse } from '@/app/domain/ApiResponse';
 
 const BASE  = environment;
 
@@ -18,12 +19,11 @@ export class UbigeoService {
 
 
   list(): Observable<DtoResponseUbigeo[]> {
-    return this.http.get<{sucess: boolean, message: string, data: DtoResponseUbigeo[]}>(`${BASE.apiUrl}/Ubigeo/GetUbigeos`)
+    return this.http.get<ApiResponse<DtoResponseUbigeo>>(`${BASE.apiUrl}/Ubigeo/GetUbigeos`)
       .pipe(
         map(response => response.data)
       );
   }
-
 
    store(data : DtoUbigeoCreate){
       return this.http.post<{message : string}>(`${BASE.apiUrl}/Ubigeo/CreateUbigeo`, data)
@@ -34,7 +34,7 @@ export class UbigeoService {
     }
   
     delete(id : number){
-      return this.http.post<{message : string}>(`${BASE.apiUrl}/Ubigeo/DeleteUbigeo/`, { id })
+      return this.http.get<{message : string}>(`${BASE.apiUrl}/Ubigeo/DeleteUbigeo/${id}`)
     }
 
 }

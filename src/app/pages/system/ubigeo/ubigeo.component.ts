@@ -15,7 +15,7 @@ import { ConfirmationService } from 'primeng/api';
 import { UbigeoService } from '@/app/services/system/mantenimiento/ubigeo/ubigeo.service';
 import { HelperStore } from '@/stores/HelpersStore';
 import { UbigeosStore } from '@/stores/system/UbigeoStore';
-import {  } from '@/app/domain/dtos/system/ubigeo/DtoUbigeoEdit';
+import { TagModule } from 'primeng/tag';
 import { DtoResponseUbigeo } from '@/app/domain/dtos/system/ubigeo/DtoResponseUbigeo';
 
 @Component({
@@ -32,8 +32,9 @@ import { DtoResponseUbigeo } from '@/app/domain/dtos/system/ubigeo/DtoResponseUb
     InputIcon,
     ContentHeaderComponent,
     UbigeoCreateComponent,
-    UbigeoEditComponent
-],
+    UbigeoEditComponent,
+    TagModule,
+  ],
   templateUrl: './ubigeo.component.html',
   styleUrl: './ubigeo.component.css',
 })
@@ -44,94 +45,115 @@ export class UbigeoComponent {
   ubigeoService = inject(UbigeoService);
   confirmationService = inject(ConfirmationService);
 
-  selectedRow = signal< DtoResponseUbigeo | null>(null);
+  selectedRow = signal<DtoResponseUbigeo | null>(null);
 
   options = signal([
     {
       label: 'Opciones',
       items: [
-          {
-              label: 'Editar',
-              icon: 'pi pi-pen-to-square',
-              command: () => {
-                this.onEdit(this.selectedRow());
-              }
+        {
+          label: 'Editar',
+          icon: 'pi pi-pen-to-square',
+          command: () => {
+            this.onEdit(this.selectedRow());
           },
-          {
-              label: 'Eliminar',
-              icon: 'pi pi-trash',
-              command: () => {
-                this.onDelete(this.selectedRow());
-              }
-          }]
-    }
+        },
+        {
+          label: 'Eliminar',
+          icon: 'pi pi-trash',
+          command: () => {
+            this.onDelete(this.selectedRow());
+          },
+        },
+      ],
+    },
   ]);
 
-  constructor(){
-      this.loadlTableUbigeos()
-    }
+  constructor() {
+    this.loadlTableUbigeos();
+  }
 
-    onSuccessCreate(){
-      console.log("onSuccessCreate");
-      this.loadlTableUbigeos()
+  getSeverity(status: boolean) {
+    switch (status) {
+      case true:
+        return 'success';
+      case false:
+        return 'warning';
     }
+  }
+  
+  onSuccessCreate() {
+    console.log('onSuccessCreate');
+    this.loadlTableUbigeos();
+  }
 
-    loadlTableUbigeos(){
-      this.ubigeoStore.doList();
+  loadlTableUbigeos() {
+    this.ubigeoStore.doList();
+  }
+
+  onOpenModalCreateUbigeo() {
+    this.ubigeoStore.openModalCreate();
+  }
+
+  onEdit(ubigeoEdit: DtoResponseUbigeo | null) {
+    if (ubigeoEdit) {
+      this.ubigeoStore.openModalEdit(ubigeoEdit);
     }
+  }
 
-    onOpenModalCreateUbigeo(){
-      this.ubigeoStore.openModalCreate()
+  onDelete(entity: DtoResponseUbigeo | null) {
+    if (entity) {
+      this.confirmationService.confirm({
+        message: '¿Estás seguro de que quieres continuar?',
+        header: 'Confirmación',
+        icon: 'pi pi-exclamation-triangle',
+        rejectButtonProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true,
+        },
+        acceptButtonProps: {
+          severity: 'danger',
+          label: 'Eliminar',
+        },
+        acceptIcon: 'pi pi-check',
+        rejectIcon: 'pi pi-times',
+        rejectButtonStyleClass: 'p-button-text',
+        accept: () => {
+          this.ubigeoService.delete(entity.id_ubigeo).subscribe({
+            next: (response) => {
+              this.ubigeoStore.doList();
+              this.helperStore.showToast({
+                severity: 'success',
+                summary: 'Eliminado',
+                detail: response.message,
+              });
+            },
+            error: (error) => {
+              console.error(error);
+              this.helperStore.showToast({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No se pudo eliminar',
+              });
+            },
+          });
+        },
+        reject: () => {
+          this.helperStore.showToast({
+            severity: 'warn',
+            summary: 'Cancelado',
+            detail: 'Ha cancelado la eliminación',
+          });
+        },
+      });
+    } else {
+      console.warn('El ubigeo para eliminar no esta seleccionado');
     }
+  }
 
-    onEdit(ubigeoEdit : DtoResponseUbigeo|null){
-      if(ubigeoEdit){
-        this.ubigeoStore.openModalEdit(ubigeoEdit)
-      }
-    }
-
-    onDelete(entity : DtoResponseUbigeo|null){
-      if(entity){
-        this.confirmationService.confirm({
-          message: '¿Estás seguro de que quieres continuar?',
-          header: 'Confirmación',
-          icon: 'pi pi-exclamation-triangle',
-          rejectButtonProps: {
-            label: 'Cancelar',
-            severity: 'secondary',
-            outlined: true,
-          },
-          acceptButtonProps: {
-              severity: 'danger',
-              label: 'Eliminar',
-          },
-          acceptIcon:"pi pi-check",
-          rejectIcon:"pi pi-times",
-          rejectButtonStyleClass:"p-button-text",
-          accept: () => {
-              this.ubigeoService.delete(entity.id_ubigeo).subscribe({
-                next: (response) => {
-                  this.ubigeoStore.doList()
-                  this.helperStore.showToast({severity: 'success', summary: 'Eliminado', detail: response.message })
-                },
-                error: (error) => {
-                  console.error(error)
-                  this.helperStore.showToast({severity: 'error', summary: 'Error', detail: 'No se pudo eliminar' })
-                }
-              })
-          },
-          reject: () => {
-            this.helperStore.showToast({severity: 'warn', summary: 'Cancelado', detail: 'Ha cancelado la eliminación' })
-          }
-        })
-
-      }else{
-        console.warn("El ubigeo para eliminar no esta seleccionado")
-      }
-    }
-
-    onOpenMenuOptionsRowTable(event : MouseEvent, menu : any, row : any){
-      this.selectedRow.update(() => row)
-      menu.toggle(event)
-    }
+  onOpenMenuOptionsRowTable(event: MouseEvent, menu: any, row: any) {
+    this.selectedRow.update(() => row);
+    menu.toggle(event);
+  }
 }

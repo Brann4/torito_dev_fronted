@@ -8,6 +8,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { authInterceptor } from '@/interceptors/auth.interceptor';
+import { MyPreset } from './theme';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     ConfirmationService,
     providePrimeNG({
       theme: {
-          preset: Aura,
+          preset: MyPreset,
           options: {
             darkModeSelector: '.my-app-dark',
           }

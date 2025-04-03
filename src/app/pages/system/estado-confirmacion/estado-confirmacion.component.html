@@ -1,0 +1,90 @@
+<app-content-header
+  [breadcrumbs]="breadcrumbs"
+  title="ESTADO CONFIRMACION"
+  description="Módulo de gestión de estado de confirmacion">
+</app-content-header>
+
+<div class="mx-3">
+  <p-card>
+    <p-table
+      #dt1
+      [value]="estadoConfirmacionStore.entities()"
+      dataKey="id_estado_confirmacion"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [rows]="5"
+      [rowHover]="true"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [paginator]="true"
+      currentPageReportTemplate="Visualizar {first} a {last} de {totalRecords} registros"
+      [globalFilterFields]="['id_estado_confirmacion','descripcion', 'mensaje', 'estado']"
+      showGridlines>
+
+      <ng-template #caption>
+        <div class="flex justify-content-between gap-2">
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-search"/>
+            <input
+              type="text"
+              pInputText
+              size="small"
+              class="w-full md:w-14"
+              placeholder="Buscador"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"/>
+          </p-iconfield>
+
+          <p-button label="Nuevo" icon="pi pi-save" (click)="onOpenModalCreateEstadoConfirmacion()"/>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            N°
+          </th>
+          <th pSortableColumn="id_descripcion">
+            Descripcion <p-sortIcon field="id_descripcion" />
+          </th>
+          <th pSortableColumn="id_mensaje">
+            Mensaje <p-sortIcon field="id_mensaje" />
+          </th>
+          <th pSortableColumn="id_estado">
+            Estado <p-sortIcon field="id_estado" />
+          </th>
+          <th>
+            Opciones
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-estadoconfirmacion let-rowIndex="rowIndex">
+        <tr [pSelectableRow]="estadoconfirmacion">
+          <td>
+            {{rowIndex + 1}}
+          </td>
+          <td>
+            {{ estadoconfirmacion.descripcion }}
+          </td>
+          <td>
+            {{ estadoconfirmacion.mensaje }}
+          </td>
+          <td>
+            {{ estadoconfirmacion.estado }}
+          </td>
+          <td class="py-1 text-center">
+            <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />
+            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,estadoconfirmacion)" [rounded]="true" [text]="true" icon="pi pi-ellipsis-v"/>
+          </td>
+        </tr>
+      </ng-template>
+
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">No se encontraron registros.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+

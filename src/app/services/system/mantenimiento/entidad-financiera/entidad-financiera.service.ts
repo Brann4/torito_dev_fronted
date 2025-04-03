@@ -1,0 +1,40 @@
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {environment} from '@/environments/environment.development';
+import {DtoResponseEntidadFinanciera} from '@/app/domain/dtos/system/entidad-financiera/DtoResponseEntidadFinanciera';
+import {DtoEntidadFinancieraCreate} from '@/app/domain/dtos/system/entidad-financiera/DtoEntidadFinancieraCreate';
+import {DtoEntidadFinancieraEdit} from '@/app/domain/dtos/system/entidad-financiera/DtoEntidadFinancieraEdit';
+import {map, Observable} from 'rxjs';
+
+const BASE = environment;
+
+@Injectable({
+  providedIn: 'root'
+})
+export class EntidadFinancieraService {
+  constructor(private http: HttpClient) {
+  }
+
+  list(): Observable<DtoResponseEntidadFinanciera[]> {
+    return this.http.get<{
+      sucess: boolean,
+      message: string,
+      data: DtoResponseEntidadFinanciera[]
+    }>(`${BASE.apiUrl}/EntidadFinanciera/GetEntidadesFinancieras`)
+      .pipe(
+        map(response => response.data)
+      );
+  }
+
+  store(data: DtoEntidadFinancieraCreate) {
+    return this.http.post<{ message: string }>(`${BASE.apiUrl}/EntidadFinanciera/CreateEntidadFinanciera`, data)
+  }
+
+  update(data: DtoEntidadFinancieraEdit) {
+    return this.http.post<{ message: string }>(`${BASE.apiUrl}/EntidadFinanciera/UpdateEntidadFinanciera`, data)
+  }
+
+  delete(id: number) {
+    return this.http.post<{ message: string }>(`${BASE.apiUrl}/EntidadFinanciera/DeleteEntidadFinanciera/`, {id})
+  }
+}

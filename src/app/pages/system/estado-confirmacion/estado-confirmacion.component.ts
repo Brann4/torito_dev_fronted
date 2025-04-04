@@ -27,8 +27,7 @@ import {
   EstadoConfirmacionEditComponent
 } from '@/app/pages/system/estado-confirmacion/edit/estado-confirmacion-edit.component';
 
-import {EstadoConfirmacionStore} from '@/stores/system/EstadoConfirmacionStore';
-import { TagModule } from 'primeng/tag';
+
 
 
 @Component({

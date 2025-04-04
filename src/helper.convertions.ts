@@ -1,3 +1,6 @@
+import { encode } from "punycode";
+import { Observable } from "rxjs";
+
 export function createFormData(values: any): FormData {
   const formData = new FormData();
 
@@ -40,3 +43,19 @@ export async function createFileEmptyFromUrl(fullURL : string) {
   const file = new File([new Blob()], fullURL, { type: "image/*" });
   return file;
 }
+/*
+export function  getBase64EncodedFileData(file:File) : Observable<string>{
+  return new Observable( observer => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const {result} = reader;
+      const data = result as ArrayBuffer;
+      const base64Encoded = encode(data);
+
+      observer.next(base64Encoded);
+      observer.complete();
+
+    }
+  });
+}*/

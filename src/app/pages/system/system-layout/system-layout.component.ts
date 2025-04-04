@@ -143,7 +143,11 @@ export class SystemLayoutComponent implements OnInit{
               route: 'tipo-documento',
               icon: 'pi pi-map-marker'
             },
-
+            {
+              label: 'Rol',
+              route: 'rol',
+              icon: 'pi pi-map-marker'
+            },
           ]
         },
         {

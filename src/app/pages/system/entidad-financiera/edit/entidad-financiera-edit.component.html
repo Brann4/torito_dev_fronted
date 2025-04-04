@@ -9,7 +9,7 @@ header="Editar Ubigeo"
 (visibleChange)="onCloseModalEdit()">
 
     <form class="grid pt-2" [formGroup]="FormEntidadFinancieraUpdate">
-        <div class="col-12">
+        <div style="display: none" class="col-12">
             <p-floatLabel variant="on">
                 <input pInputText id="id_entidad_financiera" formControlName="id_entidad_financiera"  class="w-full"/>
                 <label for="id_entidad_financiera">Id</label>
@@ -39,14 +39,14 @@ header="Editar Ubigeo"
           <div class="col-12">
             <label for="logo">Logo *</label>
             <p-floatLabel variant="on">
-              <p-fileupload 
-                mode="advanced" 
-                chooseLabel="Choose" 
-                chooseIcon="pi pi-upload" 
-                name="logo" 
-                accept="image/*" 
-                maxFileSize="1000000" 
-                [auto]="true" 
+              <p-fileupload
+                mode="advanced"
+                chooseLabel="Choose"
+                chooseIcon="pi pi-upload"
+                name="logo"
+                accept="image/*"
+                maxFileSize="1000000"
+                [auto]="true"
                 (onSelect)="onFileSelect($event)"
                 [showUploadButton]="false"
                 />
@@ -55,7 +55,7 @@ header="Editar Ubigeo"
               {{ getErrorMessageEdit('logo') }}
             </small>
           </div>
-      
+
           <div class="col-12">
             <label for="estado" class="block mb-2">Estado:</label>
             <div class="flex flex-wrap gap-4">
@@ -63,7 +63,7 @@ header="Editar Ubigeo"
                   <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado" />
                   <label for="estado" class="ml-2">Activo</label>
               </div>
-          
+
               <div class="flex items-center">
                   <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado" />
                   <label for="estado" class="ml-2">Inactivo</label>
@@ -73,7 +73,7 @@ header="Editar Ubigeo"
               {{ getErrorMessageEdit('estado') }}
             </small>
           </div>
-      
+
     </form>
 
     <ng-template #footer>

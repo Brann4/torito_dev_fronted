@@ -153,7 +153,7 @@ export class EstadoConfirmacionComponent {
         },
       });
     } else {
-      console.warn('El ubigeo para eliminar no esta seleccionado');
+      console.warn('El Estado Confirmacion para eliminar no esta seleccionado');
     }
   }
 

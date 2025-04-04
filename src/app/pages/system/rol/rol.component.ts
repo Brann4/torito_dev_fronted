@@ -143,7 +143,7 @@ export class RolComponent {
         },
       });
     } else {
-      console.warn('El rol para eliminar no esta seleccionado');
+      console.warn('El Rol para eliminar no esta seleccionado');
     }
   }
 }

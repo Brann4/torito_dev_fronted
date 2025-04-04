@@ -143,7 +143,7 @@ export class TipoDocumentoComponent {
         },
       });
     } else {
-      console.warn('El ubigeo para eliminar no esta seleccionado');
+      console.warn('El Tipo Documento para eliminar no esta seleccionado');
     }
   }
 }

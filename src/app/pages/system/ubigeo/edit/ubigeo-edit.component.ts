@@ -4,7 +4,7 @@ import { HelperStore } from '@/stores/HelpersStore';
 import { UbigeosStore } from '@/stores/system/UbigeoStore';
 import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';;
+import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -13,10 +13,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DtoUbigeoEdit } from '@/app/domain/dtos/system/ubigeo/DtoUbigeoEdit';
 import { TextareaModule } from 'primeng/textarea';
 import { RadioButton } from 'primeng/radiobutton';
-
-
-
-
 
 @Component({
   selector: 'app-ubigeo-edit',

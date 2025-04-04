@@ -151,7 +151,7 @@ export class EntidadFinancieraComponent {
           },
         });
       } else {
-        console.warn('El ubigeo para eliminar no esta seleccionado');
+        console.warn('La Entidad Financiera para eliminar no esta seleccionado');
       }
     }
 

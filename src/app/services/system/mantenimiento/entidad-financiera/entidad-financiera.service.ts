@@ -23,11 +23,11 @@ export class EntidadFinancieraService {
       );
   }
 
-  store(data: DtoEntidadFinancieraCreate) {
+  store(data: FormData) {
     return this.http.post<{ message: string }>(`${BASE.apiUrl}/EntidadFinanciera/CreateEntidadFinanciera`, data)
   }
 
-  update(data: DtoEntidadFinancieraEdit) {
+  update(data: FormData) {
     return this.http.post<{ message: string }>(`${BASE.apiUrl}/EntidadFinanciera/UpdateEntidadFinanciera`, data)
   }
 

@@ -1,100 +1,91 @@
 <p-dialog
-header="Editar Ubigeo"
-[modal]="true"
-[breakpoints]="{'575px': '100vw'}"
-[style]="{ width: '500px',maxHeight: '100%'}"
-[draggable]="false"
-[resizable]="false"
-[visible]="ubigeoStore.isOpenEdit()"
-(visibleChange)="onCloseModalEdit()">
+  header="Editar Ubigeo"
+  [modal]="true"
+  [breakpoints]="{'575px': '100vw'}"
+  [style]="{ width: '500px',maxHeight: '100%'}"
+  [draggable]="false"
+  [resizable]="false"
+  [visible]="ubigeoStore.isOpenEdit()"
+  (visibleChange)="onCloseModalEdit()">
 
-    <form class="grid pt-2" [formGroup]="FormUbigeoUpdate">
-
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText id="id_ubigeo" formControlName="id_ubigeo"  class="w-full"/>
-                <label for="id_ubigeo">Id</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageEdit('id_ubigeo') }}
-            </small>
+  <form class="grid pt-2" [formGroup]="FormUbigeoUpdate">
+    <div style="display: none" class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="id_ubigeo" formControlName="id_ubigeo" class="w-full"/>
+        <label for="id_ubigeo">Id</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('id_ubigeo') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="id_departamento" formControlName="id_departamento" class="w-full"/>
+        <label for="id_departamento">Pais</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('id_departamento') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="id_provincia" formControlName="id_provincia" class="w-full"/>
+        <label for="id_provincia">Provincia</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('id_provincia') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="id_distrito" formControlName="id_distrito" class="w-full"/>
+        <label for="id_distrito">Distrito</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('id_distrito') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <textarea rows="5" cols="30" pTextarea id="descripcion" formControlName="descripcion" class="w-full"></textarea>
+        <label for="descripcion">Descripción</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('descripcion') }}
+      </small>
+    </div>
+    <div class="col-12">
+      <label for="estado" class="block mb-2">Estado:</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado"/>
+          <label for="estado" class="ml-2">Activo</label>
         </div>
 
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText id="id_departamento" formControlName="id_departamento"  class="w-full"/>
-                <label for="id_departamento">Pais</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageEdit('id_departamento') }}
-            </small>
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado"/>
+          <label for="estado" class="ml-2">Inactivo</label>
         </div>
+      </div>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageEdit('estado') }}
+      </small>
+    </div>
+  </form>
 
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText id="id_provincia" formControlName="id_provincia"  class="w-full"/>
-                <label for="id_provincia">Provincia</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageEdit('id_provincia') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText id="id_distrito" formControlName="id_distrito"  class="w-full"/>
-                <label for="id_distrito">Distrito</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageEdit('id_distrito') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <textarea rows="5" cols="30" pTextarea id="descripcion"  formControlName="descripcion" class="w-full"></textarea>
-                <label for="descripcion">Descripción</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageEdit('descripcion') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <label for="estado" class="block mb-2">Estado:</label>
-            <div class="flex flex-wrap gap-4">
-              <div class="flex items-center">
-                  <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado" />
-                  <label for="estado" class="ml-2">Activo</label>
-              </div>
-          
-              <div class="flex items-center">
-                  <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado" />
-                  <label for="estado" class="ml-2">Inactivo</label>
-              </div>
-            </div>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageEdit('estado') }}
-            </small>
-          </div>
-
-      
-    </form>
-
-    <ng-template #footer>
-      <p-button
+  <ng-template #footer>
+    <p-button
       label="Cancelar"
       [text]="true"
       severity="secondary"
-      (onClick)="onCloseModalEdit()" />
+      (onClick)="onCloseModalEdit()"/>
 
-      <p-button
-          [label]="ubigeoStore.isSubmitting() ? 'Editando...' : 'Editar'"
-          [icon]="ubigeoStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
-          iconPos="left"
-          [disabled]="ubigeoStore.isSubmitting()"
-          (onClick)="handleSubmit()">
-      </p-button>
+    <p-button
+      [label]="ubigeoStore.isSubmitting() ? 'Editando...' : 'Editar'"
+      [icon]="ubigeoStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
+      iconPos="left"
+      [disabled]="ubigeoStore.isSubmitting()"
+      (onClick)="handleSubmit()">
+    </p-button>
   </ng-template>
 </p-dialog>
-

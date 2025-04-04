@@ -9,9 +9,9 @@
   (visibleChange)="onCloseModalEdit()">
 
   <form class="grid pt-2" [formGroup]="FormEstadoConfirmacionUpdate">
-    <div class="col-12">
+    <div style="display: none" class="col-12">
       <p-floatLabel variant="on">
-        <input pInputText [disabled]="true" id="id_estado_confirmacion" formControlName="id_estado_confirmacion"
+        <input pInputText id="id_estado_confirmacion" formControlName="id_estado_confirmacion"
                class="w-full"/>
         <label for="id_estado_confirmacion">Id</label>
       </p-floatLabel>

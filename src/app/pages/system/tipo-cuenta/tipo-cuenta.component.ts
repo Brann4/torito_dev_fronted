@@ -143,7 +143,7 @@ export class TipoCuentaComponent {
         },
       });
     } else {
-      console.warn('El ubigeo para eliminar no esta seleccionado');
+      console.warn('El Tipo Cuenta para eliminar no esta seleccionado');
     }
   }
 }

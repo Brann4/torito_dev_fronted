@@ -1,15 +1,15 @@
 <app-content-header
   [breadcrumbs]="breadcrumbs"
-  title="TIPO CUENTA"
-  description="Módulo de gestión de tipo de cuenta">
+  title="ROL"
+  description="Módulo de gestión de rol">
 </app-content-header>
 
 <div class="mx-3">
   <p-card>
     <p-table
       #dt1
-      [value]="tipoCuentaStore.entities()"
-      dataKey="id_tipo_cuenta"
+      [value]="rolStore.entities()"
+      dataKey="id_rol"
       [tableStyle]="{ 'min-width': '50rem' }"
       [rows]="5"
       [rowHover]="true"
@@ -17,7 +17,7 @@
       [rowsPerPageOptions]="[10, 25, 50]"
       [paginator]="true"
       currentPageReportTemplate="Visualizar {first} a {last} de {totalRecords} registros"
-      [globalFilterFields]="['id_tipo_cuenta','descripcion', 'estado']"
+      [globalFilterFields]="['id_rol','nombre_rol', 'estado']"
       showGridlines>
 
       <ng-template #caption>
@@ -33,7 +33,7 @@
               (input)="dt1.filterGlobal($any($event.target).value, 'contains')"/>
           </p-iconfield>
 
-          <p-button label="Nuevo" icon="pi pi-save" (click)="onOpenModalCreateTipoCuenta()"/>
+          <p-button label="Nuevo" icon="pi pi-save" (click)="onOpenModalCreateRol()"/>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -41,9 +41,9 @@
           <th>
             N°
           </th>
-          <th pSortableColumn="id_descripcion">
-            Descripcion
-            <p-sortIcon field="id_descripcion"/>
+          <th pSortableColumn="id_nombre_rol">
+            Nombre Rol
+            <p-sortIcon field="id_nombre_rol"/>
           </th>
           <th pSortableColumn="id_estado">
             Estado
@@ -55,21 +55,21 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-tipocuenta let-rowIndex="rowIndex">
-        <tr [pSelectableRow]="tipocuenta">
+      <ng-template pTemplate="body" let-rol let-rowIndex="rowIndex">
+        <tr [pSelectableRow]="rol">
           <td>
             {{ rowIndex + 1 }}
           </td>
           <td>
-            {{ tipocuenta.descripcion }}
+            {{ rol.nombre_rol }}
           </td>
           <td>
-            <p-tag [value]="tipocuenta.estado ? 'Activo' : 'Inactivo'"
-                   [severity]="$any(tipocuenta.estado ? 'success' : 'danger')"/>
+            <p-tag [value]="rol.estado ? 'Activo' : 'Inactivo'"
+                   [severity]="$any(rol.estado ? 'success' : 'danger')"/>
           </td>
           <td class="py-1 text-center">
             <p-menu #menu [model]="options()" appendTo="body" [popup]="true"/>
-            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,tipocuenta)" [rounded]="true" [text]="true"
+            <p-button (click)="onOpenMenuOptionsRowTable($event,menu,rol)" [rounded]="true" [text]="true"
                       icon="pi pi-ellipsis-v"/>
           </td>
         </tr>
@@ -84,5 +84,5 @@
   </p-card>
 </div>
 
-<app-tipo-cuenta-create/>
-<app-tipo-cuenta-edit/>
+<app-rol-create/>
+<app-rol-edit/>

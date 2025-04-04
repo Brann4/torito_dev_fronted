@@ -9,6 +9,7 @@ import {TipoCuentaComponent} from '@/app/pages/system/tipo-cuenta/tipo-cuenta.co
 import {EstadoWalletDetalleComponent} from '@/app/pages/system/estado-wallet-detalle/estado-wallet-detalle.component';
 import {EstadoConfirmacionComponent} from '@/app/pages/system/estado-confirmacion/estado-confirmacion.component';
 import {EntidadFinancieraComponent} from '@/app/pages/system/entidad-financiera/entidad-financiera.component';
+import {RolComponent} from '@/app/pages/system/rol/rol.component';
 
 export const SYSTEM_ROUTES: Routes = [
 
@@ -24,6 +25,7 @@ export const SYSTEM_ROUTES: Routes = [
       {path: 'estado-detalle-wallet', component: EstadoWalletDetalleComponent},
       {path: 'estados-confirmacion', component: EstadoConfirmacionComponent},
       {path: 'entidad-financiera', component: EntidadFinancieraComponent},
+      {path: 'rol', component: RolComponent},
     ],
     // canActivate: [
     //     authGuard

@@ -27,9 +27,6 @@ import {
   EstadoConfirmacionEditComponent
 } from '@/app/pages/system/estado-confirmacion/edit/estado-confirmacion-edit.component';
 
-
-
-
 @Component({
   selector: 'app-estado-confirmacion',
   imports: [
@@ -156,7 +153,7 @@ export class EstadoConfirmacionComponent {
         },
       });
     } else {
-      console.warn('El ubigeo para eliminar no esta seleccionado');
+      console.warn('El Estado Confirmacion para eliminar no esta seleccionado');
     }
   }
 

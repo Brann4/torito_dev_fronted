@@ -64,7 +64,8 @@
             {{ tipodocumento.descripcion }}
           </td>
           <td>
-            {{ tipodocumento.estado }}
+            <p-tag [value]="tipodocumento.estado ? 'Activo' : 'Inactivo'"
+                   [severity]="$any(tipodocumento.estado ? 'success' : 'danger')"/>
           </td>
           <td class="py-1 text-center">
             <p-menu #menu [model]="options()" appendTo="body" [popup]="true"/>

@@ -12,14 +12,14 @@ import {ContentHeaderComponent} from '@/app/components/content-header/content-he
 import {ConfirmationService} from 'primeng/api';
 import {HelperStore} from '@/stores/HelpersStore';
 import {TagModule} from 'primeng/tag';
-import {TipoDocumentoStore} from '@/stores/system/TipoDocumentoStore';
-import {DtoResponseTipoDocumento} from '@/app/domain/dtos/system/tipo-documento/DtoResponseTipoDocumento';
-import {TipoDocumentoService} from '@/app/services/system/mantenimiento/tipo-documento/tipo-documento.service';
-import {TipoDocumentoCreateComponent} from '@/app/pages/system/tipo-documento/create/tipo-documento-create.component';
-import {TipoDocumentoEditComponent} from '@/app/pages/system/tipo-documento/edit/tipo-documento-edit.component';
+import {RolStore} from '@/stores/system/RolStore';
+import {DtoResponseRol} from '@/app/domain/dtos/system/rol/DtoResponseRol';
+import {RolService} from '@/app/services/system/mantenimiento/rol/rol.service';
+import {RolCreateComponent} from '@/app/pages/system/rol/create/rol-create.component';
+import {RolEditComponent} from '@/app/pages/system/rol/edit/rol-edit.component';
 
 @Component({
-  selector: 'app-tipo-documento',
+  selector: 'app-rol',
   imports: [
     TableModule,
     CommonModule,
@@ -32,20 +32,20 @@ import {TipoDocumentoEditComponent} from '@/app/pages/system/tipo-documento/edit
     InputIcon,
     ContentHeaderComponent,
     TagModule,
-    TipoDocumentoCreateComponent,
-    TipoDocumentoEditComponent,
+    RolCreateComponent,
+    RolEditComponent,
   ],
-  templateUrl: './tipo-documento.component.html',
-  styleUrl: './tipo-documento.component.css'
+  templateUrl: './rol.component.html',
+  styleUrl: './rol.component.css'
 })
-export class TipoDocumentoComponent {
-  breadcrumbs = [{label: 'Tipo Documento'}];
+export class RolComponent {
+  breadcrumbs = [{label: 'Rol'}];
   helperStore = inject(HelperStore);
-  tipoDocumentoStore = inject(TipoDocumentoStore);
-  tipoDocumentoService = inject(TipoDocumentoService);
+  rolStore = inject(RolStore);
+  rolService = inject(RolService);
   confirmationService = inject(ConfirmationService);
 
-  selectedRow = signal<DtoResponseTipoDocumento | null>(null);
+  selectedRow = signal<DtoResponseRol | null>(null);
   options = signal([
     {
       label: 'Opciones',
@@ -69,20 +69,20 @@ export class TipoDocumentoComponent {
   ]);
 
   constructor() {
-    this.loadTableTipoDocumento()
+    this.loadTableRol()
   }
 
   onSuccessCreate() {
     console.log("onSuccessCreate");
-    this.loadTableTipoDocumento()
+    this.loadTableRol()
   }
 
-  loadTableTipoDocumento() {
-    this.tipoDocumentoStore.doList();
+  loadTableRol() {
+    this.rolStore.doList();
   }
 
-  onOpenModalCreateTipoDocumento() {
-    this.tipoDocumentoStore.openModalCreate()
+  onOpenModalCreateRol() {
+    this.rolStore.openModalCreate()
   }
 
   onOpenMenuOptionsRowTable(event: MouseEvent, menu: any, row: any) {
@@ -90,13 +90,13 @@ export class TipoDocumentoComponent {
     menu.toggle(event)
   }
 
-  onEdit(tipoDocumentoEdit: DtoResponseTipoDocumento | null) {
-    if (tipoDocumentoEdit) {
-      this.tipoDocumentoStore.openModalEdit(tipoDocumentoEdit);
+  onEdit(rolEdit: DtoResponseRol | null) {
+    if (rolEdit) {
+      this.rolStore.openModalEdit(rolEdit);
     }
   }
 
-  onDelete(entity: DtoResponseTipoDocumento | null) {
+  onDelete(entity: DtoResponseRol | null) {
     if (entity) {
       this.confirmationService.confirm({
         message: '¿Estás seguro de que quieres continuar?',
@@ -115,9 +115,9 @@ export class TipoDocumentoComponent {
         rejectIcon: 'pi pi-times',
         rejectButtonStyleClass: 'p-button-text',
         accept: () => {
-          this.tipoDocumentoService.delete(entity.id_tipo_documento).subscribe({
+          this.rolService.delete(entity.id_rol).subscribe({
             next: (response) => {
-              this.tipoDocumentoStore.doList();
+              this.rolStore.doList();
               this.helperStore.showToast({
                 severity: 'success',
                 summary: 'Eliminado',
@@ -143,7 +143,7 @@ export class TipoDocumentoComponent {
         },
       });
     } else {
-      console.warn('El Tipo Documento para eliminar no esta seleccionado');
+      console.warn('El Rol para eliminar no esta seleccionado');
     }
   }
 }

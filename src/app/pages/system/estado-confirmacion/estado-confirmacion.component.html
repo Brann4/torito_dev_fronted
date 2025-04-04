@@ -71,7 +71,8 @@
             {{ estadoconfirmacion.mensaje }}
           </td>
           <td>
-            {{ estadoconfirmacion.estado }}
+            <p-tag [value]="estadoconfirmacion.estado ? 'Activo' : 'Inactivo'"
+                   [severity]="$any(estadoconfirmacion.estado ? 'success' : 'danger')"/>
           </td>
           <td class="py-1 text-center">
             <p-menu #menu [model]="options()" appendTo="body" [popup]="true"/>

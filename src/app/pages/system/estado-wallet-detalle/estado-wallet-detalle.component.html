@@ -64,7 +64,8 @@
             {{ estadowalletdetalle.descripcion }}
           </td>
           <td>
-            {{ estadowalletdetalle.estado }}
+            <p-tag [value]="estadowalletdetalle.estado ? 'Activo' : 'Inactivo'"
+                   [severity]="$any(estadowalletdetalle.estado ? 'success' : 'danger')"/>
           </td>
           <td class="py-1 text-center">
             <p-menu #menu [model]="options()" appendTo="body" [popup]="true"/>
@@ -73,7 +74,6 @@
           </td>
         </tr>
       </ng-template>
-
 
       <ng-template pTemplate="emptymessage">
         <tr>

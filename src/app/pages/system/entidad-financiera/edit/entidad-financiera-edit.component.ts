@@ -119,6 +119,7 @@ export class EntidadFinancieraEditComponent{
     formData.append('nombre', name);
     formData.append('iniciales', iniciales);
     formData.append('estado', this.FormEntidadFinancieraUpdate.get('estado')?.value ? 'true': 'false' );
+    
     if (this.selectedFile) {
       formData.append('logo', this.selectedFile);
     }

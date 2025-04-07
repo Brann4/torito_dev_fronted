@@ -1,7 +1,7 @@
 <p-dialog header="Crear Ubigeo" [modal]="true" [breakpoints]="{'575px': '100vw'}"
   [style]="{ width: '500px',maxHeight: '100%'}" [draggable]="false" [resizable]="false"
   [visible]="ubigeoStore.isOpenCreate()" (visibleChange)="onCloseModalCreate()">
-  <form class="grid pt-2" [formGroup]="FormUbigeoCreate">
+  <form class="grid pt-2" [formGroup]="frmCreate">
     <div class="col-12">
       <p-floatLabel variant="on">
         <input pInputText id="id_pais" formControlName="id_pais" class="w-full" />

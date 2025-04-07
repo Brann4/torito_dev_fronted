@@ -111,7 +111,12 @@ export class SystemLayoutComponent implements OnInit{
             {
               label: 'Usuarios',
               route: 'usuarios',
-              icon: 'pi pi-arrow-right'
+              icon: 'pi pi-user'
+            },
+            {
+              label: 'Rol',
+              route: 'rol',
+              icon: 'pi pi-users'
             },
             {
               label: 'Ubigeo',
@@ -121,17 +126,17 @@ export class SystemLayoutComponent implements OnInit{
             {
               label: 'Entidad Financiera',
               route: 'entidad-financiera',
-              icon: 'pi pi-map-marker'
+              icon: 'pi pi-building'
             },
             {
               label: 'Estados de Confirmacion',
               route: 'estados-confirmacion',
-              icon: 'pi pi-map-marker'
+              icon: 'pi pi-list-check'
             },
             {
               label: 'Estado Detalle Wallet',
               route: 'estado-detalle-wallet',
-              icon: 'pi pi-map-marker'
+              icon: 'pi pi-wallet'
             },
             {
               label: 'Tipo de Cuenta',
@@ -143,11 +148,7 @@ export class SystemLayoutComponent implements OnInit{
               route: 'tipo-documento',
               icon: 'pi pi-map-marker'
             },
-            {
-              label: 'Rol',
-              route: 'rol',
-              icon: 'pi pi-map-marker'
-            },
+
           ]
         },
         {

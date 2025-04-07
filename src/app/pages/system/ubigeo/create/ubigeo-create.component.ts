@@ -49,7 +49,7 @@ export class UbigeoCreateComponent implements OnInit {
   isActive!: boolean;
   
 
-  FormUbigeoCreate = this.formBuilder.group({
+  frmCreate = this.formBuilder.group({
     id_pais: new FormControl<string>('', {
       validators: [Validators.required, Validators.minLength(1)],
       nonNullable: true,
@@ -82,20 +82,20 @@ export class UbigeoCreateComponent implements OnInit {
 
   onCloseModalCreate() {
     this.ubigeoStore.closeModalCreate();
-    this.FormUbigeoCreate.reset();
+    this.frmCreate.reset();
   }
 
   getErrorMessageOnCreate(controlName: string): string {
-    const control = this.FormUbigeoCreate.get(controlName as string);
+    const control = this.frmCreate.get(controlName as string);
     return getErrorByKey(controlName, control);
   }
 
   handleSubmit() {
-    this.FormUbigeoCreate.markAllAsTouched();
+    this.frmCreate.markAllAsTouched();
 
-    if (this.FormUbigeoCreate.valid) {
+    if (this.frmCreate.valid) {
       this.isSubmitting.set(true);
-      const selectedValues = this.FormUbigeoCreate.getRawValue();
+      const selectedValues = this.frmCreate.getRawValue();
 
       this.ubigeoService.store(selectedValues as DtoUbigeoCreate).subscribe({
         next: (response) => {

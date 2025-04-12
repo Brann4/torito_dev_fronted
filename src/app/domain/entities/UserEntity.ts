@@ -1,12 +1,17 @@
 export type UserEntity = {
-  id: number;
-  name: string;
-  email: string;
-  constraint: string;
-  email_verified_at: string;
+  id_usuario: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  id_tipo_documento: number;
+  numero_documento: string;
+  correo_electronico: string;
   password: string;
-  role_id: number;
-  remember_token: string;
-  created_at: string;
-  updated_at: string;
+  id_rol: number;
+  is_super: boolean;
+  estado: boolean;
+  usuario_creacion?: number;
+  usuario_modificacion?: number;
+  fecha_creacion?: Date ;
+  fecha_modificacion?: Date ;
 };

@@ -25,6 +25,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { HelperStore } from '@/stores/HelpersStore';
 import { NotificationService } from '@/app/services/notification.service';
+import { UserEntity } from '@/app/domain/entities/UserEntity';
 
 @Component({
   selector: 'app-system-layout',
@@ -71,17 +72,21 @@ export class SystemLayoutComponent implements OnInit{
   helperStore = inject(HelperStore);
   notificationService = inject(NotificationService);
 
-  user = signal<any>({
-    id : 0,
-    name : '',
-    email : '',
-    constraint : '',
-    email_verified_at : '',
-    password : '',
-    remember_token : '',
-    created_at : '',
-    updated_at : '',
-    role_id : 0,
+  user = signal<UserEntity>({
+    id_usuario: 0,
+    nombre: '',
+    apellido_paterno: '',
+    apellido_materno: '',
+    id_tipo_documento: 0,
+    numero_documento: '',
+    correo_electronico: '',
+    password: '',
+    id_rol: 0,
+    is_super: false,
+    estado: false,
+    usuario_creacion: 0,
+    usuario_modificacion: 0,
+
   })
 
   menu = signal<any[]>([]);
@@ -90,6 +95,7 @@ export class SystemLayoutComponent implements OnInit{
 
     this.menu.update(() => {
       const currentMenu = this.authStore.getMenu();
+
       return [
         {
           label: 'Bienvenido',
@@ -173,6 +179,12 @@ export class SystemLayoutComponent implements OnInit{
 
   ngOnInit() {
     this.checkScreenWidth();
+    this.authStore.getUserAuthenticated().then((user) => {
+      if (user) {
+        this.user.set(user);
+      }
+    });
+
   }
 
   userMenuItems = [

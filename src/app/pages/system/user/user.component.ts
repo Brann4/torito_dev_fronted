@@ -115,7 +115,7 @@ export class UserComponent {
         rejectIcon:"pi pi-times",
         rejectButtonStyleClass:"p-button-text",
         accept: () => {
-            this.userService.delete(entity.id).subscribe({
+            this.userService.delete(entity.id_usuario).subscribe({
               next: (response) => {
                 this.userStore.doList()
                 this.helperStore.showToast({severity: 'success', summary: 'Eliminado', detail: response.message })

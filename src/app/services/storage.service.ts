@@ -7,20 +7,20 @@ export class StorageService {
 
   get(key: string): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return ''//localStorage.getItem(key);
+      return localStorage.getItem(key);
     }
     return null;
   }
 
   set(key: string, value: string): void {
     if (isPlatformBrowser(this.platformId)) {
-     //localStorage.setItem(key, value);
+     localStorage.setItem(key, value);
     }
   }
 
   remove(key: string): void {
     if (isPlatformBrowser(this.platformId)) {
-      //localStorage.removeItem(key);
+      localStorage.removeItem(key);
     }
   }
 }

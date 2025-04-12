@@ -16,7 +16,7 @@
         tooltipPosition="left"/>
 
         <p-avatar
-          label="{{ user().name.charAt(0).toUpperCase() }}"
+          label="{{  user().nombre.charAt(0) }}"
             styleClass="ml-4 cursor-pointer"
             shape="circle"
             (click)="userMenu.toggle($event)">
@@ -39,12 +39,12 @@
           <ng-template #header>
               <div class="flex items-center gap-2">
                   <p-avatar
-                  label="{{ user().name.charAt(0).toUpperCase() }}"
+                  label="{{  user().nombre.charAt(0) }}"
                   class="mr-2"
                   shape="circle" />
                   <span class="inline-flex flex-column">
-                      <span class="font-bold">{{  user().name || 'no hay'}} </span>
-                      <span class="text-sm">{{ user().email || 'no hay' }}</span>
+                      <span class="font-bold">{{  user().nombre || 'no hay'}} </span>
+                      <span class="text-sm">{{ user().correo_electronico || 'no hay' }}</span>
                   </span>
               </div>
           </ng-template>

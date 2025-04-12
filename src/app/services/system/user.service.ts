@@ -4,6 +4,8 @@ import { environment } from '@/environments/environment';
 import { DtoResponseUser } from '@/app/domain/dtos/system/user/DtoResponseUser';
 import { DtoUserCreate } from '@/app/domain/dtos/system/user/DtoUserCreate';
 import { DtoUserEdit } from '@/app/domain/dtos/system/user/DtoUserEdit';
+import { ApiResponseSingle } from '@/app/domain/ApiResponse';
+import { UserEntity } from '@/app/domain/entities/UserEntity';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +15,13 @@ export class UserService {
   constructor(
     private http: HttpClient,
   ) { }
-  
+
   list(){
-    return this.http.get<DtoResponseUser[]>(`${environment.apiUrl}/users/list`)
+    return this.http.get<DtoResponseUser[]>(`${environment.apiUrl}/Usuario/GetUsuarios`)
+  }
+
+  getById(id : string){
+    return this.http.get<ApiResponseSingle<UserEntity>>(`${environment.apiUrl}/Usuario/GetUsuarioById/${id}`)
   }
 
   store(values : DtoUserCreate){

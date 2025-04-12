@@ -80,11 +80,11 @@ export class UserEditComponent implements OnInit {
 
   loadEntityForEdit() {
     const entity = this.userStore.entityEdit();
-    if (entity) {
+    /*if (entity) {
       this.frmEdit.patchValue({ ...entity,
-        employee_id: (entity.current_employee)?entity.current_employee.id:null,
+        employee_id: (entity.nombre)?entity.current_employee.id:null,
        });
-    }
+    }*/
   }
 
   onCloseModalEdit() {

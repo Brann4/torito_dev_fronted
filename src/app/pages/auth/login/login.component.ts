@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   password!: string;
   authService  = inject(AuthService)
   toolbarStore  = inject(ToolbarStore)
-  helpers  = inject(HelperStore)
+  helperStore  = inject(HelperStore)
   authStore = inject(AuthStore)
   router = inject(Router)
 
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
   ) {
     this.frmLogin = this.fb.group({
-      email : new FormControl('',[Validators.required]),
+      correo_electronico : new FormControl('',[Validators.required]),
       password : new FormControl('',[Validators.required]),
     })
     // this.toolbarStore.isDarkModeActive()
@@ -58,17 +58,54 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(!this.authStore.isLoggedIn()){
+      this.router.navigate(['/'])
+    }
   }
 
-  onSubmit(): void {
+  onSubmit() {
     this.frmLogin.markAllAsTouched()
-    if(this.frmLogin.status === 'VALID'){
-      this.isSubmitting.set(true)
-      this.router.navigate(['/system/bienvenido'])
+
+    if(this.frmLogin.valid){
+      this.isSubmitting.set(true);
+
+      this.authService.login(this.frmLogin.value).subscribe({
+        next: async (response) => {
+          const success = await this.authStore.handleLoginResponse(response);
+          //this.authStore.getUserAuthenticated().then(user => console.log(user))
+          if (success) {
+            this.isSubmitting.set(false);
+            this.helperStore.showToast({
+              severity: 'success',
+              summary: 'Login exitoso',
+              detail: 'Bienvenido al sistema',
+            });
+            this.router.navigate(['/system/dashboard']);
+          }else{
+            this.isSubmitting.set(false);
+            this.helperStore.showToast({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Credenciales no registradas en el sistema',
+            });
+            this.router.navigate(['/']);
+          }
+
+      },
+      error: (err) => {
+        this.isSubmitting.set(false);
+        this.helperStore.showToast({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.message,
+        });
+      },
+
+    });
 
 
     }else{
-      this.helpers.showToast({severity:'error',summary:'Error',detail:'Formulario invalido'})
+      this.helperStore.showToast({severity:'error',summary:'Error',detail:'Formulario invalido'})
       console.log("Formulario invalido",this.frmLogin)
       console.log(getErrosOnControls(this.frmLogin))
     }

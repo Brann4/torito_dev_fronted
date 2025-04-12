@@ -1,13 +1,8 @@
+import { UserEntity } from "../entities/UserEntity";
 
-import { UserEntity } from "../entities/UserEntity"
-
-export type DtoDecodedJWT = {
-    iss: string
-    iat: number
-    exp: number
-    nbf: number
-    jti: string
-    sub: string
-    prv: string
-    user: UserEntity & { employees: any[], role: any }
+export interface DtoDecodedJWT {
+  // Claims específicos según tu ejemplo de JWT
+  success: boolean; // success convertido de string a boolean
+  message: string; // message convertido de string a boolean
+  data: UserEntity;
 }

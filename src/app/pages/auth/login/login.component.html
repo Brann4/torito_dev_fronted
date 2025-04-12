@@ -10,12 +10,12 @@
                   <div class="text-7xl text-center sulphur-point-bold">Login</div>
                     <form [formGroup]="frmLogin" (ngSubmit)="onSubmit()">
                         <div class="field">
-                            <label for="email">Correo</label>
+                            <label for="correo_electronico">Correo</label>
                             <p-inputGroup>
                               <p-inputGroupAddon>
                                   <i class="pi pi-user"></i>
                               </p-inputGroupAddon>
-                              <input pInputText id="email" formControlName="email" class="w-full" autocomplete="username"/>
+                              <input pInputText id="correo_electronico" formControlName="correo_electronico" class="w-full" autocomplete="correo_electronico"/>
                           </p-inputGroup>
                         </div>
                         <div class="field">

@@ -4,4 +4,9 @@ export interface ApiResponse<T> {
   data: T[];
 }
 
-  
+export interface ApiResponseSingle<T> {
+  sucess: boolean;
+  message: string;
+  data: T;
+}
+

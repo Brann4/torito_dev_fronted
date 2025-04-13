@@ -1,4 +1,4 @@
-import {DtoResponseTipoDocumento} from '@/app/domain/dtos/system/tipo-documento/DtoResponseTipoDocumento';
+import { DtoResponseTipoDocumento } from '@/app/domain/dtos/system/tipo-documento/DtoResponseTipoDocumento';
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {inject} from '@angular/core';
 import {TipoDocumentoService} from '@/app/services/system/mantenimiento/tipo-documento/tipo-documento.service';

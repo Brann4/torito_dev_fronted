@@ -61,10 +61,13 @@ export const AuthStore = signalStore(
         return null;
       },
 
-      getUserIdFromJWT(JWT: string): string | null {
+      getUserIdFromJWT(JWT: string): number | null {
         const claims = this.parseJWTClaims(JWT);
         if (!claims) return null;
-        return claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || null;
+
+        let userId = claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+        return Number(userId) || null;
 
       },
 
@@ -106,7 +109,7 @@ export const AuthStore = signalStore(
         }
       },
 
-      async fetchUserDetails(userId: string) : Promise<UserEntity | null> {
+      async fetchUserDetails(userId: number) : Promise<UserEntity | null> {
 
         try {
           const response = await firstValueFrom(userService.getById(userId));

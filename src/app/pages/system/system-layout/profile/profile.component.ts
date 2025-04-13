@@ -76,7 +76,7 @@ export class ProfileComponent {
         this.frmEdit.get('user_id')?.setValue(userEntity.id)
 
         const values = this.frmEdit.getRawValue()
-        this.userService.updatePassword(values as any)
+        /*this.userService.updatePassword(values as any)
         .subscribe({
           next : (response) => {
             this.helperStore.showToast({severity : 'success', summary : 'Actualizado', detail : response.message})
@@ -85,13 +85,13 @@ export class ProfileComponent {
           error : (error) => {
             console.log({error})
           }
-  
-        })
+
+        })*/
         this.profileStore.closeModalEdit()
       }else{
         console.log('No se ha seleccion un usuario')
       }
-     
+
     }else{
       console.log(getErrosOnControls(this.frmEdit))
     }

@@ -17,6 +17,9 @@ import { DtoResponseUser } from '@/app/domain/dtos/system/user/DtoResponseUser';
 import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
 import { ContentHeaderComponent } from '@/app/components/content-header/content-header.component';
+import { RolStore } from '@/stores/system/RolStore';
+import { TipoDocumentoStore } from '@/stores/system/TipoDocumentoStore';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-user',
@@ -50,6 +53,14 @@ export class UserComponent {
   userService = inject(UserService)
   confirmationService = inject(ConfirmationService)
 
+  rolStore = inject(RolStore)
+  tipoDocumentoStore = inject(TipoDocumentoStore)
+
+  rolName = signal<string>('')
+  tipoDocumentoName = signal<string>('')
+
+  //userId : number | null = this.authStore.getUserIdFromJWT(this.authStore.getJWT());
+
   selectedRow  = signal<DtoResponseUser|null>(null)
   options = signal([
     {
@@ -73,8 +84,9 @@ export class UserComponent {
   ])
 
   constructor(){
+    this.loadRoles()
+    this.loadTiposDocumentos()
     this.loadTableUsers()
-
   }
 
   onSuccessCreate(){
@@ -84,6 +96,23 @@ export class UserComponent {
 
   loadTableUsers(){
     this.userStore.doList()
+  }
+
+  loadRoles(){
+    this.rolStore.doList()
+  }
+  loadTiposDocumentos(){
+    this.tipoDocumentoStore.doList()
+  }
+
+  getRolNameById(idRol: number): string {
+    const rol = this.rolStore.entities().find(r => r.id_rol === idRol);
+    return rol?.nombre_rol ?? 'Rol no encontrado';
+  }
+
+  getTipoDocumentoById(idTipoDocumento: number): string {
+    const documento = this.tipoDocumentoStore.entities().find(r => r.id_tipo_documento === idTipoDocumento);
+    return documento?.descripcion ?? 'Documento no encontrado';
   }
 
   onOpenModalCreateUser(){
@@ -96,7 +125,7 @@ export class UserComponent {
     }
   }
 
-  onDelete(entity : UserEntity|null){
+  onDelete(entity : DtoResponseUser|null){
     if(entity){
       this.confirmationService.confirm({
         message: '¿Estás seguro de que quieres continuar?',
@@ -132,7 +161,7 @@ export class UserComponent {
       })
 
     }else{
-      console.warn("El vehiculo para eliminar no esta seleccionado")
+      console.warn("El usuario para eliminar no esta seleccionado")
     }
   }
 

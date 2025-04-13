@@ -1,3 +1,4 @@
+
 export interface DtoResponseTipoDocumento {
   id_tipo_documento: number;
   descripcion: string;

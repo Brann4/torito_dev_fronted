@@ -9,7 +9,7 @@
             <p-table
                 #dt1
                 [value]="userStore.entities()"
-                dataKey="id"
+                dataKey="id_usuario"
                 [tableStyle]="{ 'min-width': '50rem' }"
                 [rows]="5"
                 [rowHover]="true"
@@ -17,7 +17,7 @@
                 [rowsPerPageOptions]="[5,10, 25, 50]"
                 [paginator]="true"
                 currentPageReportTemplate="Visualizar {first} a {last} de {totalRecords} registros"
-                [globalFilterFields]="['id', 'name','role.name','employees[0].name']"
+                [globalFilterFields]="['id_usuario', 'nombre','correo_electronico','id_rol','id_tipo_documento']"
                 showGridlines>
 
                 <ng-template #caption>
@@ -41,14 +41,17 @@
                         <th>
                             N°
                         </th>
-                        <th pSortableColumn="name">
-                            Nombre <p-sortIcon field="name" />
+                        <th pSortableColumn="nombre">
+                            Nombre <p-sortIcon field="nombre" />
                         </th>
-                        <th pSortableColumn="email">
-                            Email <p-sortIcon field="email" />
+                        <th pSortableColumn="correo_electronico">
+                            Correo <p-sortIcon field="correo_electronico" />
                         </th>
-                        <th pSortableColumn="role.name">
-                            Rol <p-sortIcon field="role.name" />
+                        <th pSortableColumn="id_rol">
+                            Rol <p-sortIcon field="id_rol" />
+                        </th>
+                        <th pSortableColumn="id_tipo_documento">
+                            Tipo Documento <p-sortIcon field="id_tipo_documento" />
                         </th>
                         <th>
                             Opciones
@@ -62,13 +65,16 @@
                             {{rowIndex + 1}}
                         </td>
                         <td>
-                            {{ user.name }}
+                            {{ user.nombre }}
                         </td>
                         <td>
-                            {{ user.email }}
+                            {{ user.correo_electronico }}
                         </td>
                         <td>
-                            {{ user.role.name }}
+                            {{ getRolNameById(user.id_rol) }}
+                        </td>
+                        <td>
+                            {{ getTipoDocumentoById(user.id_tipo_documento) }}
                         </td>
                         <td class="py-1 text-center">
                             <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />

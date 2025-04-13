@@ -1,4 +1,6 @@
 import { DtoUserEdit } from '@/app/domain/dtos/system/user/DtoUserEdit';
+import { RolService } from '@/app/services/system/mantenimiento/rol/rol.service';
+import { TipoDocumentoService } from '@/app/services/system/mantenimiento/tipo-documento/tipo-documento.service';
 import { UserService } from '@/app/services/system/user.service';
 import { getErrorByKey, getErrosOnControls } from '@/helpers';
 import { HelperStore } from '@/stores/HelpersStore';
@@ -11,7 +13,10 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { RadioButton } from 'primeng/radiobutton';
 import { Select } from 'primeng/select';
+import { ToggleSwitch } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-user-edit',
@@ -25,6 +30,16 @@ import { Select } from 'primeng/select';
     FloatLabelModule,
     Select,
     DropdownModule,
+    ReactiveFormsModule,
+    DialogModule,
+    FloatLabelModule,
+    ButtonModule,
+    InputTextModule,
+    CommonModule,
+    RadioButton,
+    PasswordModule,
+    ToggleSwitch
+
   ],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.css',
@@ -32,18 +47,26 @@ import { Select } from 'primeng/select';
 export class UserEditComponent implements OnInit {
   userStore = inject(UserStore);
   userService = inject(UserService);
+  tipoDocumentoService = inject(TipoDocumentoService);
+  roleService = inject(RolService);
   helperStore = inject(HelperStore);
   formBuilder = inject(FormBuilder);
 
-  employees = signal<any>(null)
+  tiposDocumento = signal<any>(null)
   roles = signal<any>(null)
 
   frmEdit = this.formBuilder.group({
-    id: new FormControl<number>(0, { validators: [Validators.min(1)], nonNullable: true }),
-    name: new FormControl<string>({ value: '', disabled: true }, { validators: [Validators.required], nonNullable: true }),
-    email: new FormControl<string>('', { validators: [Validators.required, Validators.email], nonNullable: true }),
-    role_id: new FormControl<number | null>(null, { validators: [Validators.required, Validators.min(1)], nonNullable: true }),
-    employee_id : new FormControl<number|null>(null,{ validators : [Validators.required,Validators.min(1)] , nonNullable : true}),
+    id_usuario: new FormControl<number>({ value: 0, disabled: true }, { validators: [Validators.min(1)], nonNullable: true }),
+    nombre: new FormControl<string>('', { validators: [Validators.required], nonNullable: true }),
+    apellido_paterno: new FormControl<string>('', { validators: [Validators.required], nonNullable: true }),
+    apellido_materno: new FormControl<string>('', { validators: [Validators.required], nonNullable: true }),
+    id_tipo_documento: new FormControl<number>(0, { validators: [Validators.min(1)], nonNullable: true }),
+    numero_documento: new FormControl<string>('', { validators: [Validators.min(9)], nonNullable: true }),
+    correo_electronico: new FormControl<string>('', { validators: [Validators.required, Validators.email], nonNullable: true }),
+    password: new FormControl<string>('', { validators: [Validators.required], nonNullable: true }),
+    id_rol: new FormControl<number>(0, { validators: [Validators.min(1)], nonNullable: true }),
+    is_super: new FormControl<boolean>(false, { validators: [Validators.min(1)], nonNullable: true }),
+    estado: new FormControl<boolean>(false, { validators: [Validators.min(1)], nonNullable: true }),
   });
 
   hasLoaded = false;
@@ -60,31 +83,49 @@ export class UserEditComponent implements OnInit {
   ngOnInit() {
     this.loadInitialData();
 
-    // this.employeeService.list().subscribe({
-    //   next : (employees) => {
-    //     const transformedData = employees.map((employee) => ({
-    //       ...employee,
-    //       fullName: `${employee.name} ${employee.lastname}`.toUpperCase()
-    //     }));
-    //     this.employees.set(transformedData);
-    //   },
-    //   error : (error) => {
-    //     console.log({error})
-    //   }
-    // })
+    this.userService.list().subscribe({
+      next: (response) => {
+        /*const transformedData = employees.map((employee) => ({
+          ...employee,
+          fullName: `${employee.name} ${employee.lastname}`.toUpperCase()
+        }));*/
+        // this.employees.set(transformedData);
+      },
+      error: (error) => {
+        console.log({ error })
+      }
+    })
   }
 
   loadInitialData() {
-
+    this.loadTiposDocumentos()
+    this.loadRoles()
   }
+
+  loadTiposDocumentos(){
+    this.tipoDocumentoService
+    .list()
+    .subscribe( (data) =>
+      this.tiposDocumento.set(data.filter ( (documento) => documento.estado == true ))
+    );
+  }
+  loadRoles(){
+    this.roleService
+      .list()
+      .subscribe((data) =>
+        this.roles.set(data.filter((rol) => rol.estado == true))
+      );
+  }
+
 
   loadEntityForEdit() {
     const entity = this.userStore.entityEdit();
-    /*if (entity) {
-      this.frmEdit.patchValue({ ...entity,
-        employee_id: (entity.nombre)?entity.current_employee.id:null,
-       });
-    }*/
+    if (entity) {
+      this.frmEdit.patchValue({
+        ...entity,
+        numero_documento: entity.numero_documento,
+      });
+    }
   }
 
   onCloseModalEdit() {
@@ -96,7 +137,6 @@ export class UserEditComponent implements OnInit {
   handleSubmit() {
     this.frmEdit.markAllAsTouched();
     if (this.frmEdit.valid) {
-      console.log('Formulario válido:', this.frmEdit.getRawValue());
       this.userStore.setSubmitting(true);
       const values = this.frmEdit.getRawValue();
       this.userService.update(values as DtoUserEdit).subscribe({

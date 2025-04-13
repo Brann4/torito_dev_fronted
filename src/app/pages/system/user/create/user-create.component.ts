@@ -104,6 +104,7 @@ export class UserCreateComponent implements OnInit {
 
   constructor() {
     this.loadInitialData();
+
   }
 
   ngOnInit() {
@@ -137,7 +138,7 @@ export class UserCreateComponent implements OnInit {
   loadTiposDocumentos(){
     this.tipoDocumentoService
     .list()
-    .subscribe( (data) => 
+    .subscribe( (data) =>
       this.tiposDocumento.set(data.filter ( (documento) => documento.estado == true ))
     );
   }
@@ -149,9 +150,9 @@ export class UserCreateComponent implements OnInit {
 
   handleSubmit() {
     this.frmCreate.markAllAsTouched();
-    console.log(this.frmCreate)
+    console.log(this.frmCreate.getRawValue());
 
-    /* if(this.frmCreate.status === 'VALID'){
+     if(this.frmCreate.valid){
       this.isSubmitting.set(true)
       const values = this.frmCreate.getRawValue()
       this.userService.store(values as DtoUserCreate)
@@ -173,7 +174,6 @@ export class UserCreateComponent implements OnInit {
       console.log(getErrosOnControls(this.frmCreate))
       this.helperStore.showToast({severity : 'error', summary : 'Error', detail : 'Complete los campos requeridos'})
     }
-*/
   }
 
   getErrorMessageOnCreate(controlName: string): string {

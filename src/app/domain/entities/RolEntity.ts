@@ -1,5 +1,4 @@
-
-export interface DtoResponseRol {
+export type RolEntity = {
   id_rol: number;
   nombre_rol: string;
   estado: boolean;
@@ -7,4 +6,4 @@ export interface DtoResponseRol {
   usuario_modificacion: number;
   fecha_creacion: Date;
   fecha_modificacion: Date;
-}
+};

@@ -1,173 +1,141 @@
-<p-dialog
-header="Crear usuario"
-[modal]="true"
-[breakpoints]="{'575px': '100vw'}"
-[style]="{ width: '500px',maxHeight: '100%'}"
-[draggable]="false"
-[resizable]="false"
-[visible]="userStore.isOpenCreate()"
-(visibleChange)="onCloseModalCreate()">
+<p-dialog header="Crear usuario" [modal]="true" [breakpoints]="{'575px': '100vw'}"
+  [style]="{ width: '500px',maxHeight: '100%'}" [draggable]="false" [resizable]="false"
+  [visible]="userStore.isOpenCreate()" (visibleChange)="onCloseModalCreate()">
 
-    <form class="grid pt-2" [formGroup]="frmCreate">
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText pKeyFilter="alpha" id="nombre" formControlName="nombre"  class="w-full"/>
-                <label for="nombre">Nombre *</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('nombre') }}
-            </small>
-        </div>
+  <form class="grid pt-2" [formGroup]="frmCreate">
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText pKeyFilter="alpha" id="nombre" formControlName="nombre" class="w-full" />
+        <label for="nombre">Nombre *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('nombre') }}
+      </small>
+    </div>
 
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText pKeyFilter="alpha" id="apellido_paterno" formControlName="apellido_paterno"  class="w-full"/>
-                <label for="apellido_paterno">Apellido Paterno *</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('apellido_paterno') }}
-            </small>
-        </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText pKeyFilter="alpha" id="apellido_paterno" formControlName="apellido_paterno" class="w-full" />
+        <label for="apellido_paterno">Apellido Paterno *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('apellido_paterno') }}
+      </small>
+    </div>
 
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText pKeyFilter="alpha" id="apellido_materno" formControlName="apellido_materno"  class="w-full"/>
-                <label for="apellido_materno">Apellido Materno *</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('apellido_materno') }}
-            </small>
-        </div>
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText pKeyFilter="alpha" id="apellido_materno" formControlName="apellido_materno" class="w-full" />
+        <label for="apellido_materno">Apellido Materno *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('apellido_materno') }}
+      </small>
+    </div>
 
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <p-select
-                styleClass="w-full"
-                appendTo="body"
-                [options]="tiposDocumento()"
-                inputId="id_tipo_documento"
-                formControlName="id_tipo_documento"
-                optionLabel="descripcion"
-                optionValue="id_tipo_documento"
-                [filter]="true"
-                filterBy="descripcion"
-                [showClear]="true"
-                emptyFilterMessage="No se encontraron resultados"
-                emptyMessage="No se encontraron resultados">
-                </p-select>
-                <label for="id_tipo_documento">Tipo de Documento *</label>
-            </p-floatLabel>
-
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('id_tipo_documento') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText pKeyFilter="int" id="numero_documento" formControlName="numero_documento"  class="w-full"/>
-                <label for="numero_documento">Numero de Documento *</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('numero_documento') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <input pInputText id="correo_electronico" formControlName="correo_electronico"  class="w-full"/>
-                <label for="correo_electronico">Correo *</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('correo_electronico') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <p-select
-                styleClass="w-full"
-                appendTo="body"
-                [options]="roles()"
-                inputId="id_rol"
-                formControlName="id_rol"
-                optionLabel="nombre_rol"
-                optionValue="id_rol"
-                [filter]="true"
-                filterBy="nombre_rol"
-                [showClear]="true"
-                emptyFilterMessage="No se encontraron resultados"
-                emptyMessage="No se encontraron resultados">
-                </p-select>
-                <label for="id_rol">Rol</label>
-            </p-floatLabel>
-
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('id_rol') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <p-floatLabel variant="on">
-                <p-password 
-                    formControlName="password" 
-                    [toggleMask]="true" 
-                    promptLabel="Ingresa tu contraseña" 
-                    weakLabel="Débil" 
-                    mediumLabel="Normal" 
-                    strongLabel="Segura" 
-                    class="w-full" />
-                <label for="password">Contraseña *</label>
-            </p-floatLabel>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('password') }}
-            </small>
-        </div>
-
-        <div class="col-12">
-            <div class="flex justify-center flex-wrap gap-4">
-                <label for="is_super" class="mb-2">¿Usuario Administrador?</label>
-                <p-toggleswitch formControlName="is_super" />
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <p-select styleClass="w-full" appendTo="body" [options]="tiposDocumento()" inputId="id_tipo_documento"
+          formControlName="id_tipo_documento" optionLabel="descripcion" optionValue="id_tipo_documento" [filter]="true"
+          filterBy="descripcion" [showClear]="true" emptyFilterMessage="No se encontraron resultados"
+          emptyMessage="No se encontraron resultados">
+          <!--
+          <ng-template #footer>
+            <div class="p-3">
+              <p-button label="aGR" fluid severity="secondary" text size="small" icon="pi pi-plus" />
             </div>
-        
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('is_super') }}
-            </small>
+          </ng-template>-->
+        </p-select>
+        <label for="id_tipo_documento">Tipo de Documento *</label>
+      </p-floatLabel>
+
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('id_tipo_documento') }}
+      </small>
+    </div>
+
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText pKeyFilter="int" id="numero_documento" formControlName="numero_documento" class="w-full" />
+        <label for="numero_documento">Numero de Documento *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('numero_documento') }}
+      </small>
+    </div>
+
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <input pInputText id="correo_electronico" formControlName="correo_electronico" class="w-full" />
+        <label for="correo_electronico">Correo *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('correo_electronico') }}
+      </small>
+    </div>
+
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <p-select styleClass="w-full" appendTo="body" [options]="roles()" inputId="id_rol" formControlName="id_rol"
+          optionLabel="nombre_rol" optionValue="id_rol" [filter]="true" filterBy="nombre_rol" [showClear]="true"
+          emptyFilterMessage="No se encontraron resultados" emptyMessage="No se encontraron resultados">
+        </p-select>
+        <label for="id_rol">Rol</label>
+      </p-floatLabel>
+
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('id_rol') }}
+      </small>
+    </div>
+
+    <div class="col-12">
+      <p-floatLabel variant="on">
+        <p-password formControlName="password" [toggleMask]="true" promptLabel="Ingresa tu contraseña" weakLabel="Débil"
+          mediumLabel="Normal" strongLabel="Segura" class="w-full" />
+        <label for="password">Contraseña *</label>
+      </p-floatLabel>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('password') }}
+      </small>
+    </div>
+
+    <div class="col-12">
+      <div class="flex justify-center flex-wrap gap-4">
+        <label for="is_super" class="mb-2">¿Usuario Administrador?</label>
+        <p-toggleswitch formControlName="is_super" />
+      </div>
+
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('is_super') }}
+      </small>
+    </div>
+
+    <div class="col-12">
+      <label for="estado" class="block mb-2">Estado:</label>
+      <div class="flex flex-wrap gap-4">
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado" />
+          <label for="estado" class="ml-2">Activo</label>
         </div>
 
-        <div class="col-12">
-            <label for="estado" class="block mb-2">Estado:</label>
-            <div class="flex flex-wrap gap-4">
-              <div class="flex items-center">
-                  <p-radiobutton name="estado" [value]="true" inputId="estado-activo" formControlName="estado" />
-                  <label for="estado" class="ml-2">Activo</label>
-              </div>
-          
-              <div class="flex items-center">
-                  <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado" />
-                  <label for="estado" class="ml-2">Inactivo</label>
-              </div>
-            </div>
-            <small class="text-xs text-pink-600" style="height: 1em;">
-              {{ getErrorMessageOnCreate('estado') }}
-            </small>
+        <div class="flex items-center">
+          <p-radiobutton name="estado" [value]="false" inputId="estado-inactivo" formControlName="estado" />
+          <label for="estado" class="ml-2">Inactivo</label>
         </div>
+      </div>
+      <small class="text-xs text-pink-600" style="height: 1em;">
+        {{ getErrorMessageOnCreate('estado') }}
+      </small>
+    </div>
 
-    </form>
-    
-    <ng-template #footer>
-        <p-button 
-        label="Cancelar" 
-        [text]="true" 
-        severity="secondary" 
-        (onClick)="onCloseModalCreate()" />
-        
-        <p-button
-            [label]="userStore.isSubmitting() ? 'Guardando...' : 'Guardar'"
-            [icon]="userStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
-            iconPos="left" 
-            [disabled]="userStore.isSubmitting()"
-            (onClick)="handleSubmit()">
-        </p-button>
-    </ng-template>
+  </form>
+
+  <ng-template #footer>
+    <p-button label="Cancelar" [text]="true" severity="secondary" (onClick)="onCloseModalCreate()" />
+
+    <p-button [label]="userStore.isSubmitting() ? 'Guardando...' : 'Guardar'"
+      [icon]="userStore.isSubmitting() ? 'pi pi-spinner pi-spin' : 'pi pi-save'" iconPos="left"
+      [disabled]="userStore.isSubmitting()" (onClick)="handleSubmit()">
+    </p-button>
+  </ng-template>
 </p-dialog>

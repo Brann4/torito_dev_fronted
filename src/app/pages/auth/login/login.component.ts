@@ -68,11 +68,13 @@ export class LoginComponent implements OnInit {
 
     if(this.frmLogin.valid){
       this.isSubmitting.set(true);
+      //Devolver valores sin espacios
+      this.frmLogin.get('correo_electronico')?.setValue(this.frmLogin.get('correo_electronico')?.value.trim())
 
-      this.authService.login(this.frmLogin.value).subscribe({
+      this.authService.login(this.frmLogin.getRawValue()).subscribe({
         next: async (response) => {
           const success = await this.authStore.handleLoginResponse(response);
-          //this.authStore.getUserAuthenticated().then(user => console.log(user))
+
           if (success) {
             this.isSubmitting.set(false);
             this.helperStore.showToast({
@@ -90,7 +92,6 @@ export class LoginComponent implements OnInit {
             });
             this.router.navigate(['/']);
           }
-
       },
       error: (err) => {
         this.isSubmitting.set(false);

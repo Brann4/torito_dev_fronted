@@ -1,7 +1,7 @@
 <p-menubar styleClass="border-none border-noround fixed">
     <ng-template pTemplate="start">
         <p-button icon="pi pi-bars" [rounded]="true" [text]="true" (click)="toggleSidebar()"/>
-    </ng-template>
+    </ng-template> 
 
     <ng-template pTemplate="end">
       <div class="flex flex-col justify-content-center align-items-center gap-2">
@@ -57,18 +57,18 @@
           </style>
 
   @for (itemGroup of menu(); track $index) {
-      @if (itemGroup.group) {
-        <div class="w-full px-3 py-2">
-          <span class="font-semibold ">{{itemGroup.label}}</span>
-        </div>
-      }
+    @if (itemGroup.group) {
+      <div class="w-full px-3 py-2">
+        <span class="font-semibold ">{{itemGroup.label}}</span>
+      </div>
+    }
       <p-panelmenu [model]="itemGroup.items" styleClass="w-full md:w-80">
         <ng-template #item let-item>
             <div pRipple class="flex items-center px-4 py-2 cursor-pointer group" [routerLink]="item.route" [routerLinkActive]="'active-link'" [pTooltip]="item.tooltip" showDelay="1000" hideDelay="300">
                 <i [class]="item.icon + ' text-primary group-hover:text-inherit'"></i>
                 <span class="ml-2">
-                    {{ item.label }}
-                </span>
+                  {{ item.label }}
+              </span>
                 <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
                 <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded
                 bg-emphasis text-muted-color text-xs p-1">

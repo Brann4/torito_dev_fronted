@@ -85,7 +85,7 @@ export class TipoDocumentoEditComponent {
   handleSubmit() {
     this.FormTipoDocumentoUpdate.markAllAsTouched();
     if (this.FormTipoDocumentoUpdate.valid) {
-      console.log('Formulario válido:', this.FormTipoDocumentoUpdate.getRawValue());
+   
       this.tipoDocumentoStore.setSubmitting(true);
       const values = this.FormTipoDocumentoUpdate.getRawValue();
       this.tipoDocumentoService.update(values as DtoTipoDocumentoEdit).subscribe({

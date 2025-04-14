@@ -17,7 +17,7 @@
                 [rowsPerPageOptions]="[5,10, 25, 50]"
                 [paginator]="true"
                 currentPageReportTemplate="Visualizar {first} a {last} de {totalRecords} registros"
-                [globalFilterFields]="['id_usuario', 'nombre','correo_electronico','id_rol','id_tipo_documento']"
+                [globalFilterFields]="['id_usuario', 'nombre','correo_electronico','estado','id_tipo_documento','numero_documento']"
                 showGridlines>
 
                 <ng-template #caption>
@@ -41,6 +41,9 @@
                         <th>
                             N°
                         </th>
+                        <th pSortableColumn="id_tipo_documento">
+                            Tipo Documento <p-sortIcon field="id_tipo_documento" />
+                        </th>
                         <th pSortableColumn="nombre">
                             Nombre <p-sortIcon field="nombre" />
                         </th>
@@ -50,8 +53,8 @@
                         <th pSortableColumn="id_rol">
                             Rol <p-sortIcon field="id_rol" />
                         </th>
-                        <th pSortableColumn="id_tipo_documento">
-                            Tipo Documento <p-sortIcon field="id_tipo_documento" />
+                        <th pSortableColumn="estado">
+                            Estado <p-sortIcon field="estado" />
                         </th>
                         <th>
                             Opciones
@@ -65,7 +68,7 @@
                             {{rowIndex + 1}}
                         </td>
                         <td>
-                            {{ user.nombre }}
+                            {{ user.numero_documento }}
                         </td>
                         <td>
                             {{ user.correo_electronico }}
@@ -75,6 +78,10 @@
                         </td>
                         <td>
                             {{ getTipoDocumentoById(user.id_tipo_documento) }}
+                        </td>
+                        <td>
+                            <p-tag [value]="user.estado ? 'Activo' : 'Inactivo'"
+                            [severity]="$any(user.estado ? 'success' : 'danger')"/>
                         </td>
                         <td class="py-1 text-center">
                             <p-menu #menu [model]="options()" appendTo="body" [popup]="true" />

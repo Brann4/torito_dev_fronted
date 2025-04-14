@@ -20,6 +20,7 @@ import { ContentHeaderComponent } from '@/app/components/content-header/content-
 import { RolStore } from '@/stores/system/RolStore';
 import { TipoDocumentoStore } from '@/stores/system/TipoDocumentoStore';
 import { AuthStore } from '@/stores/AuthStore';
+import { Tag } from 'primeng/tag';
 
 @Component({
   selector: 'app-user',
@@ -37,6 +38,7 @@ import { AuthStore } from '@/stores/AuthStore';
     IconField,
     InputIcon,
     ContentHeaderComponent,
+    Tag,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',

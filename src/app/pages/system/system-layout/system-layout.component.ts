@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit, ViewChild, effect, inject, signal } fr
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
-import { PanelMenuModule } from 'primeng/panelmenu';
+import { PanelMenu, PanelMenuModule } from 'primeng/panelmenu';
 import { CommonModule } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { TableModule } from 'primeng/table';
@@ -50,7 +50,8 @@ import { UserEntity } from '@/app/domain/entities/UserEntity';
     DrawerModule,
     Tooltip,
     ProfileComponent,
-    OverlayBadgeModule
+    OverlayBadgeModule,
+    PanelMenu
 ],
   templateUrl: './system-layout.component.html',
   styleUrl: './system-layout.component.css',
@@ -98,19 +99,12 @@ export class SystemLayoutComponent implements OnInit{
 
       return [
         {
-          label: 'Bienvenido',
-          group: true,
+          label: 'Dashboard',
+          route: 'dashboard',
           icon: 'pi pi-home',
-          items: [
-            {
-              label: 'Bienvenido',
-              route: 'bienvenido',
-              icon: 'pi pi-arrow-right'
-            }
-          ]
         },
         {
-          label: 'Mantenimiento',
+          label: 'Usuarios',
           group: true,
           icon: 'pi pi-usuario',
           items: [
@@ -124,6 +118,13 @@ export class SystemLayoutComponent implements OnInit{
               route: 'rol',
               icon: 'pi pi-users'
             },
+          ]
+        },
+        {
+          label: 'Mantenimiento',
+          group: true,
+          icon: 'pi pi-usuario',
+          items: [
             {
               label: 'Ubigeo',
               route: 'ubigeo',
@@ -157,23 +158,11 @@ export class SystemLayoutComponent implements OnInit{
 
           ]
         },
-        {
-          label: 'Reporte',
-          group: true,
-          icon: 'pi pi-home',
-          items: [
-            {
-              label: 'Dashboard',
-              route: 'dashboard',
-              icon: 'pi pi-arrow-right'
-            }
-          ]
-        },
 
       ];
     });
 
-    //this.visibleSidebar = localStorage.getItem('visibleSidebar') === 'true';
+    this.visibleSidebar = localStorage.getItem('visibleSidebar') === 'true';
     this.toolbarStore.isDarkModeActive();
   }
 

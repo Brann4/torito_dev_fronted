@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup, ValidatorFn } from "@angular/forms"
+import { AbstractControl, FormControl, FormGroup, ValidatorFn } from "@angular/forms"
 import { NgFuncError, TypeErrorMessages, ValidatorNames } from "./types/HelpersType"
 // import jsPDF from "jspdf"
 // import autoTable from 'jspdf-autotable'
@@ -41,4 +41,5 @@ export function getErrosOnControls(form : FormGroup){
         })
     )
 }
+
 

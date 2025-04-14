@@ -70,6 +70,14 @@ export class UbigeoCreateComponent implements OnInit {
       validators: [Validators.required, Validators.minLength(1)],
       nonNullable: true,
     }),
+    codigo_telefonico: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(1)],
+      nonNullable: true,
+    }),
+    bandera: new FormControl<string>('', {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
     estado: new FormControl<boolean>(false, {
       validators: [Validators.required],
       nonNullable: true,

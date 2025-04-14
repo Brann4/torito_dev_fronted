@@ -26,6 +26,10 @@ export const SYSTEM_ROUTES: Routes = [
       {path: 'estados-confirmacion', component: EstadoConfirmacionComponent},
       {path: 'entidad-financiera', component: EntidadFinancieraComponent},
       {path: 'rol', component: RolComponent},
+      
+
+
+      {path: 'juego', component: EntidadFinancieraComponent},
     ],
     // canActivate: [
     //     authGuard

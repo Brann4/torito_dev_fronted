@@ -17,6 +17,7 @@ import { HelperStore } from '@/stores/HelpersStore';
 import { UbigeosStore } from '@/stores/system/UbigeoStore';
 import { TagModule } from 'primeng/tag';
 import { DtoResponseUbigeo } from '@/app/domain/dtos/system/ubigeo/DtoResponseUbigeo';
+import { Image } from 'primeng/image';
 
 @Component({
   selector: 'app-ubigeo',
@@ -34,6 +35,7 @@ import { DtoResponseUbigeo } from '@/app/domain/dtos/system/ubigeo/DtoResponseUb
     UbigeoCreateComponent,
     UbigeoEditComponent,
     TagModule,
+    Image
   ],
   templateUrl: './ubigeo.component.html',
   styleUrl: './ubigeo.component.css',

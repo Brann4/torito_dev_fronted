@@ -23,6 +23,7 @@ import { RadioButton } from 'primeng/radiobutton';
 import { SelectModule } from 'primeng/select';
 import { PasswordModule } from 'primeng/password';
 import { ToggleSwitch } from 'primeng/toggleswitch';
+import { AuthStore } from '@/stores/AuthStore';
 
 
 @Component({
@@ -46,6 +47,7 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 })
 export class UserCreateComponent implements OnInit {
   userStore = inject(UserStore);
+  authStore = inject(AuthStore);
   userService = inject(UserService);
   roleService = inject(RolService);
   tipoDocumentoService = inject(TipoDocumentoService)
@@ -98,6 +100,9 @@ export class UserCreateComponent implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   isSubmitting = signal<boolean>(false);
@@ -145,14 +150,21 @@ export class UserCreateComponent implements OnInit {
 
   onCloseModalCreate() {
     this.userStore.closeModalCreate();
-    this.frmCreate.reset();
+    this.frmCreate.reset({
+      usuario_creacion: Number(this.authStore.getUserId()),
+    });
+  }
+
+  getErrorMessageOnCreate(controlName: string): string {
+    const control = this.frmCreate.get(controlName as string);
+    return getErrorByKey(controlName, control);
   }
 
   handleSubmit() {
     this.frmCreate.markAllAsTouched();
     console.log(this.frmCreate.getRawValue());
 
-     if(this.frmCreate.valid){
+    /* if(this.frmCreate.valid){
       this.isSubmitting.set(true)
       const values = this.frmCreate.getRawValue()
       this.userService.store(values as DtoUserCreate)
@@ -173,11 +185,6 @@ export class UserCreateComponent implements OnInit {
     }else{
       console.log(getErrosOnControls(this.frmCreate))
       this.helperStore.showToast({severity : 'error', summary : 'Error', detail : 'Complete los campos requeridos'})
-    }
-  }
-
-  getErrorMessageOnCreate(controlName: string): string {
-    const control = this.frmCreate.get(controlName as string);
-    return getErrorByKey(controlName, control);
+    }*/
   }
 }

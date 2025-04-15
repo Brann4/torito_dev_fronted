@@ -14,11 +14,12 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { FileUpload, FileUploadEvent, UploadEvent } from 'primeng/fileupload';
+import { FileUpload } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButton } from 'primeng/radiobutton';
 import { SelectModule } from 'primeng/select';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-entidad-financiera-create',
@@ -39,6 +40,7 @@ import { SelectModule } from 'primeng/select';
 })
 export class EntidadFinancieraCreateComponent {
   helperStore = inject(HelperStore);
+  authStore = inject(AuthStore);
   entidadFinancieraStore = inject(EntidadFinancieraStore);
   entidadFinancieraService = inject(EntidadFinancieraService);
   formBuilder = inject(FormBuilder);
@@ -63,6 +65,9 @@ export class EntidadFinancieraCreateComponent {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   isSubmitting = signal<boolean>(false);
@@ -71,22 +76,21 @@ export class EntidadFinancieraCreateComponent {
 
   onCloseModalCreate() {
     this.entidadFinancieraStore.closeModalCreate();
-    this.FormEntidadFinancieraCreate.reset();
+    this.FormEntidadFinancieraCreate.reset({
+      usuario_creacion: Number(this.authStore.getUserId()),
+    });
   }
 
   onFileSelect(event: any) {
-    console.log('onFileSelect evento:', event);
     if (event.currentFiles && event.currentFiles.length > 0) {
       this.selectedFile = event.currentFiles[0];
-      console.log('Archivo seleccionado (onFileSelect):', this.selectedFile);
-      
+
       this.FormEntidadFinancieraCreate.patchValue({
-        logo: this.selectedFile
+        logo: this.selectedFile,
+        usuario_creacion: Number(this.authStore.getUserId()),
       });
     }
   }
-
-  
 
   getErrorMessageOnCreate(controlName: string): string {
     const control = this.FormEntidadFinancieraCreate.get(controlName as string);
@@ -97,47 +101,52 @@ export class EntidadFinancieraCreateComponent {
     this.FormEntidadFinancieraCreate.markAllAsTouched();
 
     // To send data in FormData format
-    let name =  this.FormEntidadFinancieraCreate.get('nombre')?.value ?? '';
-    let iniciales =  this.FormEntidadFinancieraCreate.get('iniciales')?.value ?? '';
+    const name = this.FormEntidadFinancieraCreate.get('nombre')?.value ?? '';
+    const iniciales =
+      this.FormEntidadFinancieraCreate.get('iniciales')?.value ?? '';
+    const usuario_creacion = Number(this.authStore.getUserId());
 
     const formData = new FormData();
     formData.append('nombre', name);
     formData.append('iniciales', iniciales);
-    formData.append('estado', this.FormEntidadFinancieraCreate.get('estado')?.value ? 'true': 'false' );
+    formData.append(
+      'estado',
+      this.FormEntidadFinancieraCreate.get('estado')?.value ? 'true' : 'false'
+    );
     if (this.selectedFile) {
       formData.append('logo', this.selectedFile);
     }
+    formData.append('usuario_creacion', usuario_creacion.toString());
 
-      if (this.FormEntidadFinancieraCreate.valid) {
-        this.isSubmitting.set(true);
-        const selectedValues = this.FormEntidadFinancieraCreate.getRawValue();
-  
-        this.entidadFinancieraService.store(formData).subscribe({
-          next: (response) => {
-            this.isSubmitting.set(false);
-            this.onCloseModalCreate();
-            this.helperStore.showToast({
-              severity: 'success',
-              summary: 'Entidad Financiera registrada exitosamente',
-              detail: response.message,
-            });
-            this.entidadFinancieraStore.doList();
-          },
-          error: (err) => {
-            this.isSubmitting.set(false);
-            this.helperStore.showToast({
-              severity: 'error',
-              summary: 'Error',
-              detail: err.message,
-            });
-          },
-        });
-      } else {
-        this.helperStore.showToast({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Complete los campos requeridos',
-        });
-      }
+    
+    if (this.FormEntidadFinancieraCreate.valid) {
+      this.isSubmitting.set(true);
+      this.entidadFinancieraService.store(formData).subscribe({
+        next: (response) => {
+          this.isSubmitting.set(false);
+          this.onCloseModalCreate();
+          this.helperStore.showToast({
+            severity: 'success',
+            summary: 'Entidad Financiera registrada exitosamente',
+            detail: response.message,
+          });
+          this.entidadFinancieraStore.doList();
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          this.helperStore.showToast({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.message,
+          });
+        },
+      });
+    } else {
+      this.helperStore.showToast({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Complete los campos requeridos',
+      });
+    }
   }
 }

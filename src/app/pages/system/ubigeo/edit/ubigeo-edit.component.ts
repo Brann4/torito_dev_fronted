@@ -3,7 +3,12 @@ import { getErrorByKey, getErrosOnControls } from '@/helpers';
 import { HelperStore } from '@/stores/HelpersStore';
 import { UbigeosStore } from '@/stores/system/UbigeoStore';
 import { Component, effect, inject } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -13,6 +18,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DtoUbigeoEdit } from '@/app/domain/dtos/system/ubigeo/DtoUbigeoEdit';
 import { TextareaModule } from 'primeng/textarea';
 import { RadioButton } from 'primeng/radiobutton';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-ubigeo-edit',
@@ -26,12 +32,13 @@ import { RadioButton } from 'primeng/radiobutton';
     FloatLabelModule,
     DropdownModule,
     TextareaModule,
-    RadioButton
+    RadioButton,
   ],
   templateUrl: './ubigeo-edit.component.html',
 })
 export class UbigeoEditComponent {
   ubigeoStore = inject(UbigeosStore);
+  authStore = inject(AuthStore);
   ubigeoService = inject(UbigeoService);
   helperStore = inject(HelperStore);
   formBuilder = inject(FormBuilder);
@@ -65,6 +72,10 @@ export class UbigeoEditComponent {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_modificacion: new FormControl<number>(
+      Number(this.authStore.getUserId()),
+      { nonNullable: true }
+    ),
   });
 
   hasLoaded = false;
@@ -79,16 +90,20 @@ export class UbigeoEditComponent {
   }
 
   loadEntityForEdit() {
-    //Carga datos de la tabla
     var entity = this.ubigeoStore.entityEdit();
     if (entity) {
-      this.FormUbigeoUpdate.patchValue(entity);
+      this.FormUbigeoUpdate.patchValue({
+        ...entity,
+        usuario_modificacion: Number(this.authStore.getUserId()),
+      });
     }
   }
 
   onCloseModalEdit() {
     this.ubigeoStore.closeModalEdit();
-    this.FormUbigeoUpdate.reset();
+    this.FormUbigeoUpdate.reset({
+      usuario_modificacion: Number(this.authStore.getUserId()),
+    });
     this.hasLoaded = false;
   }
 
@@ -98,26 +113,37 @@ export class UbigeoEditComponent {
   }
 
   handleSubmit() {
-      this.FormUbigeoUpdate.markAllAsTouched();
-      if (this.FormUbigeoUpdate.valid) {
-        console.log('Formulario válido:', this.FormUbigeoUpdate.getRawValue());
-        this.ubigeoStore.setSubmitting(true);
-         const values = this.FormUbigeoUpdate.getRawValue();
-      this.ubigeoService.update(values as DtoUbigeoEdit).subscribe({
-          next: (response) => {
-            this.ubigeoStore.setSubmitting(false);
-            this.onCloseModalEdit();
-            this.helperStore.showToast({ severity: 'success', summary: 'Ubigeo actualizado', detail: response.message });
-            this.ubigeoStore.doList();
-          },
-          error: (error) => {
-            this.ubigeoStore.setSubmitting(false);
-            this.helperStore.showToast({ severity: 'error', summary: 'Error', detail: error.error.message });
-          },
-        });
-      } else {
-        console.log(getErrosOnControls(this.FormUbigeoUpdate));
-        this.helperStore.showToast({ severity: 'error', summary: 'Error', detail: 'Complete los campos requeridos' });
-      }
+    this.FormUbigeoUpdate.markAllAsTouched();
+    if (this.FormUbigeoUpdate.valid) {
+      this.ubigeoStore.setSubmitting(true);
+      const values = this.FormUbigeoUpdate.getRawValue() as DtoUbigeoEdit;
+      this.ubigeoService.update(values).subscribe({
+        next: (response) => {
+          this.ubigeoStore.setSubmitting(false);
+          this.onCloseModalEdit();
+          this.helperStore.showToast({
+            severity: 'success',
+            summary: 'Ubigeo actualizado',
+            detail: response.message,
+          });
+          this.ubigeoStore.doList();
+        },
+        error: (error) => {
+          this.ubigeoStore.setSubmitting(false);
+          this.helperStore.showToast({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.error.message,
+          });
+        },
+      });
+    } else {
+      console.log(getErrosOnControls(this.FormUbigeoUpdate));
+      this.helperStore.showToast({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Complete los campos requeridos',
+      });
     }
+  }
 }

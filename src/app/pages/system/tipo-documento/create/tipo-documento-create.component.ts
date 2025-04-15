@@ -19,6 +19,7 @@ import {getErrorByKey, getErrosOnControls} from '@/helpers';
 import {TipoDocumentoStore} from '@/stores/system/TipoDocumentoStore';
 import {TipoDocumentoService} from '@/app/services/system/mantenimiento/tipo-documento/tipo-documento.service';
 import {DtoTipoDocumentoCreate} from '@/app/domain/dtos/system/tipo-documento/DtoTipoDocumentoCreate';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-tipo-documento-create',
@@ -38,6 +39,7 @@ import {DtoTipoDocumentoCreate} from '@/app/domain/dtos/system/tipo-documento/Dt
   styleUrl: './tipo-documento-create.component.css'
 })
 export class TipoDocumentoCreateComponent implements OnInit {
+  authStore = inject(AuthStore);
   tipoDocumentoStore = inject(TipoDocumentoStore);
   tipoDocumentoService = inject(TipoDocumentoService);
   helperStore = inject(HelperStore);
@@ -53,6 +55,9 @@ export class TipoDocumentoCreateComponent implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   isSubmitting = signal<boolean>(false);
@@ -62,7 +67,9 @@ export class TipoDocumentoCreateComponent implements OnInit {
 
   onCloseModalCreate() {
     this.tipoDocumentoStore.closeModalCreate();
-    this.FormTipoDocumentoCreate.reset();
+    this.FormTipoDocumentoCreate.reset({
+      usuario_creacion: Number(this.authStore.getUserId()),
+    });
   }
 
   getErrorMessageOnCreate(controlName: string): string {
@@ -75,9 +82,9 @@ export class TipoDocumentoCreateComponent implements OnInit {
 
     if (this.FormTipoDocumentoCreate.valid) {
       this.isSubmitting.set(true);
-      const selectedValues = this.FormTipoDocumentoCreate.getRawValue();
+      const selectedValues = this.FormTipoDocumentoCreate.getRawValue() as DtoTipoDocumentoCreate;
 
-      this.tipoDocumentoService.store(selectedValues as DtoTipoDocumentoCreate).subscribe({
+      this.tipoDocumentoService.store(selectedValues).subscribe({
         next: (response) => {
           this.isSubmitting.set(false);
           this.onCloseModalCreate();

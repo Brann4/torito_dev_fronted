@@ -21,6 +21,7 @@ import {
   EstadoConfirmacionService
 } from '@/app/services/system/mantenimiento/estado-confirmacion/estado-confirmacion.service';
 import {DtoEstadoConfirmacionCreate} from '@/app/domain/dtos/system/estado-confirmacion/DtoEstadoConfirmacionCreate';
+import { AuthStore } from '@/stores/AuthStore';
 
 
 @Component({
@@ -42,10 +43,10 @@ import {DtoEstadoConfirmacionCreate} from '@/app/domain/dtos/system/estado-confi
 })
 export class EstadoConfirmacionCreateComponent implements OnInit {
   helperStore = inject(HelperStore);
+  authStore = inject(AuthStore);
   estadoConfirmacionStore = inject(EstadoConfirmacionStore);
   estadoConfirmacionService = inject(EstadoConfirmacionService);
   formBuilder = inject(FormBuilder);
-  isActive!: boolean;
 
   FormEstadoConfirmacionCreate = this.formBuilder.group({
     descripcion: new FormControl<string>('', {
@@ -60,16 +61,20 @@ export class EstadoConfirmacionCreateComponent implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   isSubmitting = signal<boolean>(false);
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   onCloseModalCreate() {
     this.estadoConfirmacionStore.closeModalCreate();
-    this.FormEstadoConfirmacionCreate.reset();
+    this.FormEstadoConfirmacionCreate.reset({
+      usuario_creacion: Number(this.authStore.getUserId()),
+    });
   }
 
   getErrorMessageOnCreate(controlName: string): string {
@@ -82,9 +87,9 @@ export class EstadoConfirmacionCreateComponent implements OnInit {
 
     if (this.FormEstadoConfirmacionCreate.valid) {
       this.isSubmitting.set(true);
-      const selectedValues = this.FormEstadoConfirmacionCreate.getRawValue();
+      const selectedValues = this.FormEstadoConfirmacionCreate.getRawValue() as DtoEstadoConfirmacionCreate;
 
-      this.estadoConfirmacionService.store(selectedValues as DtoEstadoConfirmacionCreate).subscribe({
+      this.estadoConfirmacionService.store(selectedValues).subscribe({
         next: (response) => {
           this.isSubmitting.set(false);
           this.onCloseModalCreate();

@@ -19,6 +19,8 @@ import {getErrorByKey, getErrosOnControls} from '@/helpers';
 import {TipoCuentaStore} from '@/stores/system/TipoCuentaStore';
 import {TipoCuentaService} from '@/app/services/system/mantenimiento/tipo-cuenta/tipo-cuenta.service';
 import {DtoTipoDocumentoCreate} from '@/app/domain/dtos/system/tipo-documento/DtoTipoDocumentoCreate';
+import { AuthStore } from '@/stores/AuthStore';
+import { DtoTipoCuentaCreate } from '@/app/domain/dtos/system/tipo-cuenta/DtoTipoCuentaCreate';
 
 @Component({
   selector: 'app-tipo-cuenta-create',
@@ -38,6 +40,7 @@ import {DtoTipoDocumentoCreate} from '@/app/domain/dtos/system/tipo-documento/Dt
   styleUrl: './tipo-cuenta-create.component.css'
 })
 export class TipoCuentaCreateComponent implements OnInit {
+  authStore = inject(AuthStore);
   tipoCuentaStore = inject(TipoCuentaStore);
   tipoCuentaService = inject(TipoCuentaService);
   helperStore = inject(HelperStore);
@@ -53,6 +56,9 @@ export class TipoCuentaCreateComponent implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   isSubmitting = signal<boolean>(false);
@@ -62,7 +68,9 @@ export class TipoCuentaCreateComponent implements OnInit {
 
   onCloseModalCreate() {
     this.tipoCuentaStore.closeModalCreate();
-    this.FormTipoCuentaCreate.reset();
+    this.FormTipoCuentaCreate.reset({
+      usuario_creacion: Number(this.authStore.getUserId()),
+    });
   }
 
   getErrorMessageOnCreate(controlName: string): string {
@@ -75,9 +83,9 @@ export class TipoCuentaCreateComponent implements OnInit {
 
     if (this.FormTipoCuentaCreate.valid) {
       this.isSubmitting.set(true);
-      const selectedValues = this.FormTipoCuentaCreate.getRawValue();
+      const selectedValues = this.FormTipoCuentaCreate.getRawValue() as DtoTipoCuentaCreate;
 
-      this.tipoCuentaService.store(selectedValues as DtoTipoDocumentoCreate).subscribe({
+      this.tipoCuentaService.store(selectedValues).subscribe({
         next: (response) => {
           this.isSubmitting.set(false);
           this.onCloseModalCreate();

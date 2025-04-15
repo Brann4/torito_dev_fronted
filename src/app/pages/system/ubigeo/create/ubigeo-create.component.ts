@@ -20,6 +20,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { RadioButton } from 'primeng/radiobutton';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-ubigeo-create',
@@ -42,6 +43,7 @@ import { RadioButton } from 'primeng/radiobutton';
 
 
 export class UbigeoCreateComponent implements OnInit {
+  authStore = inject(AuthStore);
   helperStore = inject(HelperStore);
   ubigeoStore = inject(UbigeosStore);
   ubigeoService = inject(UbigeoService);
@@ -82,6 +84,9 @@ export class UbigeoCreateComponent implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   isSubmitting = signal<boolean>(false);
@@ -90,7 +95,9 @@ export class UbigeoCreateComponent implements OnInit {
 
   onCloseModalCreate() {
     this.ubigeoStore.closeModalCreate();
-    this.frmCreate.reset();
+    this.frmCreate.reset({
+      usuario_creacion: Number(this.authStore.getUserId()),
+    });
   }
 
   getErrorMessageOnCreate(controlName: string): string {

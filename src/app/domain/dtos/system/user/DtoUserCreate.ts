@@ -9,4 +9,5 @@ export interface DtoUserCreate {
   id_rol: number;
   is_super: boolean;
   estado: boolean;
+  usuario_creacion: number;
 }

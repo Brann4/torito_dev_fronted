@@ -13,6 +13,7 @@ import {getErrorByKey, getErrosOnControls} from '@/helpers';
 import {TipoCuentaStore} from '@/stores/system/TipoCuentaStore';
 import {TipoCuentaService} from '@/app/services/system/mantenimiento/tipo-cuenta/tipo-cuenta.service';
 import {DtoTipoCuentaEdit} from '@/app/domain/dtos/system/tipo-cuenta/DtoTipoCuentaEdit';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-tipo-cuenta-edit',
@@ -32,6 +33,7 @@ import {DtoTipoCuentaEdit} from '@/app/domain/dtos/system/tipo-cuenta/DtoTipoCue
   styleUrl: './tipo-cuenta-edit.component.css'
 })
 export class TipoCuentaEditComponent {
+  authStore = inject(AuthStore);
   tipoCuentaStore = inject(TipoCuentaStore);
   tipoCuentaService = inject(TipoCuentaService);
   helperStore = inject(HelperStore);
@@ -50,6 +52,9 @@ export class TipoCuentaEditComponent {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_modificacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   hasLoaded = false;
@@ -64,16 +69,20 @@ export class TipoCuentaEditComponent {
   }
 
   loadEntityForEdit() {
-    //Carga datos de la tabla
     var entity = this.tipoCuentaStore.entityEdit();
     if (entity) {
-      this.FormTipoCuentaUpdate.patchValue(entity);
+      this.FormTipoCuentaUpdate.patchValue({
+        ...entity,
+        usuario_modificacion: Number(this.authStore.getUserId()),
+      });
     }
   }
 
   onCloseModalEdit() {
     this.tipoCuentaStore.closeModalEdit();
-    this.FormTipoCuentaUpdate.reset();
+    this.FormTipoCuentaUpdate.reset({
+      usuario_modificacion: Number(this.authStore.getUserId()),
+    });
     this.hasLoaded = false;
   }
 
@@ -85,10 +94,10 @@ export class TipoCuentaEditComponent {
   handleSubmit() {
     this.FormTipoCuentaUpdate.markAllAsTouched();
     if (this.FormTipoCuentaUpdate.valid) {
-      console.log('Formulario válido:', this.FormTipoCuentaUpdate.getRawValue());
+
       this.tipoCuentaStore.setSubmitting(true);
-      const values = this.FormTipoCuentaUpdate.getRawValue();
-      this.tipoCuentaService.update(values as DtoTipoCuentaEdit).subscribe({
+      const values = this.FormTipoCuentaUpdate.getRawValue() as DtoTipoCuentaEdit;
+      this.tipoCuentaService.update(values).subscribe({
         next: (response) => {
           this.tipoCuentaStore.setSubmitting(false);
           this.onCloseModalEdit();

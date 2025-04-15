@@ -3,4 +3,5 @@ export interface DtoEstadoConfirmacionEdit {
   descripcion: string;
   mensaje: string;
   estado: boolean;
+  usuario_modificacion: number;
 }

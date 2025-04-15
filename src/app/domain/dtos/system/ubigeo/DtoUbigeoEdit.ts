@@ -9,6 +9,6 @@ export interface DtoUbigeoEdit {
   bandera:                string;
   estado:                 boolean;
   fecha_modificacion:     Date | null;
-  usuario_modificacion:   number | null;
+  usuario_modificacion:   number;
 };
 

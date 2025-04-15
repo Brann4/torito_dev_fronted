@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -36,7 +36,8 @@ import { AuthStore } from '@/stores/AuthStore';
     RadioButton
   ],
   templateUrl: './rol-create.component.html',
-  styleUrl: './rol-create.component.css'
+  styleUrl: './rol-create.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RolCreateComponent implements OnInit {
   rolStore = inject(RolStore);
@@ -56,18 +57,21 @@ export class RolCreateComponent implements OnInit {
       nonNullable: true,
     }),
     usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
-      nonNullable: true
+      nonNullable: true,
     }),
   });
 
   isSubmitting = signal<boolean>(false);
 
   ngOnInit(): void {
+   
   }
 
   onCloseModalCreate() {
     this.rolStore.closeModalCreate();
-    this.FormRolCreate.reset();
+    this.FormRolCreate.reset({
+      usuario_creacion: Number(this.authStore.getUserId())
+    });
   }
 
   getErrorMessageOnCreate(controlName: string): string {
@@ -77,11 +81,10 @@ export class RolCreateComponent implements OnInit {
 
   handleSubmit() {
     this.FormRolCreate.markAllAsTouched();
-
     if (this.FormRolCreate.valid) {
       this.isSubmitting.set(true);
       const selectedValues = this.FormRolCreate.getRawValue() as DtoRolCreate;
-
+      console.log(selectedValues);
      this.rolService.store(selectedValues).subscribe({
         next: (response) => {
           this.isSubmitting.set(false);

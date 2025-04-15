@@ -12,7 +12,7 @@ export interface DtoResponseUser{
   is_super: boolean;
   estado: boolean;
   usuario_creacion?: string;
-  usuario_modificacion?: number;
+  usuario_modificacion: number;
   fecha_creacion?: Date ;
   fecha_modificacion?: Date ;
 }

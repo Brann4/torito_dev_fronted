@@ -23,6 +23,7 @@ import {
 import {
   DtoEstadoWalletDetalleCreate
 } from '@/app/domain/dtos/system/estado-wallet-detalle/DtoEstadoWalletDetalleCreate';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-estado-wallet-detalle-create',
@@ -47,6 +48,7 @@ export class EstadoWalletDetalleCreateComponent implements OnInit {
   estadoWalletDetalleService = inject(EstadoWalletDetalleService);
   formBuilder = inject(FormBuilder);
   isActive!: boolean;
+  authStore = inject(AuthStore);
 
   FormEstadoWalletDetalleCreate = this.formBuilder.group({
     descripcion: new FormControl<string>('', {
@@ -55,6 +57,9 @@ export class EstadoWalletDetalleCreateComponent implements OnInit {
     }),
     estado: new FormControl<boolean>(false, {
       validators: [Validators.required],
+      nonNullable: true,
+    }),
+    usuario_creacion: new FormControl<number>(Number(this.authStore.getUserId()), {
       nonNullable: true,
     }),
   });

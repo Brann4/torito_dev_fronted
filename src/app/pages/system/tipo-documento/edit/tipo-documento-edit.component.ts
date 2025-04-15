@@ -13,6 +13,7 @@ import {getErrorByKey, getErrosOnControls} from '@/helpers';
 import {TipoDocumentoStore} from '@/stores/system/TipoDocumentoStore';
 import {TipoDocumentoService} from '@/app/services/system/mantenimiento/tipo-documento/tipo-documento.service';
 import {DtoTipoDocumentoEdit} from '@/app/domain/dtos/system/tipo-documento/DtoTipoDocumentoEdit';
+import { AuthStore } from '@/stores/AuthStore';
 
 @Component({
   selector: 'app-tipo-documento-edit',
@@ -32,6 +33,7 @@ import {DtoTipoDocumentoEdit} from '@/app/domain/dtos/system/tipo-documento/DtoT
   styleUrl: './tipo-documento-edit.component.css'
 })
 export class TipoDocumentoEditComponent {
+  authStore = inject(AuthStore);
   tipoDocumentoStore = inject(TipoDocumentoStore);
   tipoDocumentoService = inject(TipoDocumentoService);
   helperStore = inject(HelperStore);
@@ -50,6 +52,9 @@ export class TipoDocumentoEditComponent {
       validators: [Validators.required],
       nonNullable: true,
     }),
+    usuario_modificacion: new FormControl<number>(Number(this.authStore.getUserId()), {
+      nonNullable: true,
+    }),
   });
 
   hasLoaded = false;
@@ -64,19 +69,23 @@ export class TipoDocumentoEditComponent {
   }
 
   loadEntityForEdit() {
-    //Carga datos de la tabla
     var entity = this.tipoDocumentoStore.entityEdit();
     if (entity) {
-      this.FormTipoDocumentoUpdate.patchValue(entity);
+      this.FormTipoDocumentoUpdate.patchValue({
+        ...entity,
+        usuario_modificacion: Number(this.authStore.getUserId()),
+      });
     }
   }
 
   onCloseModalEdit() {
     this.tipoDocumentoStore.closeModalEdit();
-    this.FormTipoDocumentoUpdate.reset();
+    this.FormTipoDocumentoUpdate.reset({
+      usuario_modificacion: Number(this.authStore.getUserId()),
+    });
     this.hasLoaded = false;
   }
-
+  
   getErrorMessageEdit(controlName: string): string {
     const control = this.FormTipoDocumentoUpdate.get(controlName as string);
     return getErrorByKey(controlName, control);
@@ -85,9 +94,10 @@ export class TipoDocumentoEditComponent {
   handleSubmit() {
     this.FormTipoDocumentoUpdate.markAllAsTouched();
     if (this.FormTipoDocumentoUpdate.valid) {
-   
       this.tipoDocumentoStore.setSubmitting(true);
+
       const values = this.FormTipoDocumentoUpdate.getRawValue();
+      
       this.tipoDocumentoService.update(values as DtoTipoDocumentoEdit).subscribe({
         next: (response) => {
           this.tipoDocumentoStore.setSubmitting(false);

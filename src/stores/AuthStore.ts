@@ -61,6 +61,13 @@ export const AuthStore = signalStore(
         return null;
       },
 
+      getUserId(): number | null {
+        if( this.isLoggedIn() && this.getJWT().toString().length > 0) {
+          return  Number(this.getUserIdFromJWT(this.getJWT()));
+        }
+        return 0;
+      },
+
       getUserIdFromJWT(JWT: string): number | null {
         const claims = this.parseJWTClaims(JWT);
         if (!claims) return null;

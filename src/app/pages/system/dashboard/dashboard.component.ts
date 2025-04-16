@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
             labels: ['Q1', 'Q2', 'Q3', 'Q4'],
             datasets: [
                 {
-                    label: 'Recibos por quartiles',
+                    label: 'Cantidades de ',
                     data: [540, 325, 702, 620],
                     backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
                     borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],

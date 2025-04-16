@@ -10,6 +10,7 @@ import {EstadoWalletDetalleComponent} from '@/app/pages/system/estado-wallet-det
 import {EstadoConfirmacionComponent} from '@/app/pages/system/estado-confirmacion/estado-confirmacion.component';
 import {EntidadFinancieraComponent} from '@/app/pages/system/entidad-financiera/entidad-financiera.component';
 import {RolComponent} from '@/app/pages/system/rol/rol.component';
+import { CategoriaComponent } from "./categoria/categoria.component";
 
 export const SYSTEM_ROUTES: Routes = [
 
@@ -26,7 +27,8 @@ export const SYSTEM_ROUTES: Routes = [
       {path: 'estados-confirmacion', component: EstadoConfirmacionComponent},
       {path: 'entidad-financiera', component: EntidadFinancieraComponent},
       {path: 'rol', component: RolComponent},
-      
+      {path: 'categoria', component: CategoriaComponent},
+       
 
 
       {path: 'juego', component: EntidadFinancieraComponent},

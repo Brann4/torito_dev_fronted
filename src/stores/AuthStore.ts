@@ -6,6 +6,8 @@ import { inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UserService } from "@/app/services/system/user.service";
 import { firstValueFrom } from "rxjs";
+import { Router } from "express";
+import { MessageService } from "primeng/api";
 
 
 export type AuthState = {
@@ -29,6 +31,8 @@ export const AuthStore = signalStore(
       state,
       storeService = inject(StorageService),
       userService = inject(UserService),
+      router = inject(Router),
+      messageService = inject(MessageService),
     ) => ({
       isLoggedIn() {
         const tokenJWT = this.getJWT()
@@ -38,7 +42,7 @@ export const AuthStore = signalStore(
         storeService.set('JWT', JWT)
       },
       getJWT() {
-        return storeService.get('JWT') || '{}'
+        return storeService.get('JWT') || null
       },
       removeJWT() {
         storeService.remove('JWT')
@@ -53,6 +57,7 @@ export const AuthStore = signalStore(
 
           if (typeof window !== 'undefined') {
             const decoded = window.atob(payload);
+            console.log(JSON.parse(decoded) )
             return JSON.parse(decoded);
           }
         } catch (error) {
@@ -62,7 +67,88 @@ export const AuthStore = signalStore(
       },
 
       getUserId(): number | null {
-          return  Number(this.getUserIdFromJWT(this.getJWT()));
+        return this.getUserIdFromJWT(this.getJWT() || '');
+      },
+      //TODO: Determinar porque del backend pasa 60 y llega en fecha a 40 minutos de expiracion
+      getTokenExpirationDate(): Date | null {
+        const JWT = this.getJWT();
+        if (!JWT) return null;
+        const claims = this.parseJWTClaims(JWT);
+        if (!claims || !claims.exp) return null;
+        return new Date(claims.exp * 1000);
+      },
+
+      isTokenExpired(): boolean {
+        const expiration = this.getTokenExpirationDate();
+        if (!expiration) return true;
+
+        console.log("fecha de expiracion:", expiration  );
+        console.log("fecha de actual:", new Date());
+        // Comparar con la fecha actual
+        return expiration <= new Date();
+      },
+
+       // Método para verificar la expiración y configurar un temporizador
+       setupExpirationCheck() {
+        const expiration = this.getTokenExpirationDate();
+        if (!expiration) return;
+
+        const now = new Date();
+        const timeUntilExpiration = expiration.getTime() - now.getTime();
+        
+        if (timeUntilExpiration <= 0) {
+          // Ya expiró
+          this.handleTokenExpiration();
+          return;
+        }
+
+        // Configurar un temporizador para verificar cuando expire
+        setTimeout(() => {
+          this.handleTokenExpiration();
+        }, timeUntilExpiration);
+
+        // También configurar un temporizador para notificar al usuario 1 minuto antes
+        if (timeUntilExpiration > 60000) { // 1 minuto en milisegundos
+          setTimeout(() => {
+            this.notifyExpirationWarning();
+          }, timeUntilExpiration - 60000);
+        }
+      },
+      // Método para manejar la expiración del token
+      handleTokenExpiration() {
+        if (this.isTokenExpired()) {
+          // Cerrar sesión
+          this.removeJWT();
+          this.removePermissions();
+          this.removeMenu();
+          patchState(state, {
+            isAuthenticated: false,
+            userAuthenticated: null,
+          });
+
+          // Mostrar mensaje usando PrimeNG MessageService
+          messageService.add({
+            severity: 'warn',
+            summary: 'Sesión expirada',
+            detail: 'Su sesión ha expirado. Por favor, inicie sesión nuevamente.',
+            life: 5000
+          });
+
+          // Redireccionar al login
+          router.navigate(['/login']);
+        }
+      },
+
+      // Método para notificar al usuario que la sesión está por expirar
+      notifyExpirationWarning() {
+        messageService.add({
+          severity: 'info',
+          summary: 'Aviso de sesión',
+          detail: 'Su sesión expirará en 1 minuto. ¿Desea continuar conectado?',
+          life: 30000,
+          closable: true,
+          // Si usas PrimeNG Toast con acciones personalizadas, puedes añadir botones aquí
+        });
       },
 
       getUserIdFromJWT(JWT: string): number | null {
